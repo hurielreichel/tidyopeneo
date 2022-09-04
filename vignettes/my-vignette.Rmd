@@ -1,0 +1,187 @@
+---
+title: "my-vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{my-vignette}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The **openeowrap** package was created with the intention to make the [openeo](https://cran.r-project.org/web/packages/openeo/index.html) package processes more flexible. This is due to the fact that the openeo processes are usually too "APIish". Therefore, so far, when using openeo processes, the feeling is mainly that you are not handling R code, but an specific API. For example, when trying a simple [filter_bands()](https://processes.openeo.org/#filter_bands), the code would look as something like this:
+
+```{r processes, echo=TRUE}
+library(openeo)
+
+con = con = connect(host = "https://openeo.cloud")
+p = processes()
+
+dc = p$load_collection(
+               id = "SENTINEL_5P_L2",
+               spatial_extent = list(west = 6.09, south = 46.15, east = 6.99, north = 46.57),
+               temporal_extent=c("2018-07-01", "2018-10-31")
+             )
+
+dc_no2 = p$filter_bands(data = dc, bands = "NO2")
+
+```
+
+We always need to call a *processes()* object and call the desired function from it using the dollar sign. Moreover, we need to memorise too many of these processes in order to use them. In order to help the development of this package, it was thought on the tidyverse and how many application are driving to it. Why not openEO then? This is probably a good way to go. Nevertheless, the aim here was to wrap some of the processes from the openEO API into dplyr's functions, such as the famous *filter*, *mutate*, *slice*, and so on. A guide on how exactly this was wrapped can be seen in the figure below. 
+
+![openEO processes and their relative wrapped functions in openeowrap](struc.png)
+Pay attention to the fact that all the functions were wrapped into dplyr's function, in exception to *resample*, which was fully newly created. For this specific case, this is more of an experiment to analyse whether just wrapping into dplyr functions is enough or maybe new functions could also be accepted. In general, as the idea is also to simplify openEO API processes, this came quickly to mind. For sure, as this is work in progress, more processes and wrapped functions shall show up, and even change.  
+
+We hope that with the development of this package, more people from the R community will feel like using openEO for Earth Observation tasks. 
+
+With the mission to aggregate and simplify some of the main processes from openeo, below you may see a first example on how to call the class "datacube" from openeowrap, which is understood as the first step when working with the package. The class "datacube" already sets a connection with openeo.cloud and only requires the id argument. You can also pass it to another "ProcessNode" object from openeo too.
+
+```{r setup}
+knitr::opts_chunk$set(echo = TRUE)
+library(openeowrap)
+library(sf)
+
+dc = datacube(id = "SENTINEL_5P_L2")
+```
+
+## filter
+
+From now on, we can work completely in a *tidy* syntax and use even the infamous pipes ( %>% ). The first example below demonstrates the filter_bands process and how it is wrapped in openeowrap. 
+
+```{r filter, echo=TRUE}
+dc_filter = dc %>% filter(.bands = "NO2")
+dc_filter = dc %>% filter(.bands = "CO2")
+```
+
+## slice
+
+On the other side, there is also slice, which includes four different processes. Let's have a look at some of them.
+
+```{r slice, echo=TRUE}
+dc_slice = dc_filter %>% 
+  slice(.extent = c("2018-01-01", "2018-01-02")) %>% #filter_temporal
+  slice(.extent = list(west = 6.09, south = 46.15, east = 6.99, north = 46.57)) #filter_bbox
+
+#filter_spatial
+lon = c(6.22, 6.24)
+lat = c(46.20, 46.25)
+pol_coords = dplyr::tibble(lon, lat)
+pol <- pol_coords %>%
+     st_as_sf(coords = c("lon", "lat"), crs = 3857) %>%
+     st_bbox() %>%
+     st_as_sfc()
+
+dc_sliced = dc_slice %>% slice(.geometries = pol)
+```
+
+Have a look on how we define the slice and how much it looks like a dplyr workflow. It is also important to mention that depending on the arguments that are passed, the wrapper function will deploy a different process. For knowing that, make sure to check not only the documentation of the wrapper functions, but also of the openeo processes. The parameters will be the same, although in openeowrap they can be all mixed up in one single function (the whole idea of the wrapper).
+
+Differently than from the filter() function, the slice requires more abstraction and it was thought to be more linked to the wrapped processes when thinking about spatial datacubes and Earth Observation application. The same applies to the majority of the functions in openeowrap, and, therefore, that is a big reason why they still need discussion. The wrapped functions need to be as comprehensible as possible for the Earth Observation community. 
+
+## mutate
+
+The mutate() function is also a big wrapper. It includes four processes again and they are all *apply* processes. In those terms, the example below demonstrates the use of this wrapper :
+
+```{r mutate, echo = TRUE}
+dc_cloud = dc %>% 
+  slice(.extent = c("2018-01-01", "2018-01-02")) %>% #filter_temporal
+  slice(.extent = list(west = 6.09, south = 46.15, east = 6.99, north = 46.57)) %>%  #filter_bbox
+  filter(.bands = "CLOUD_FRACTION")
+
+## mask for cloud cover
+p = openeo::processes()
+
+threshold_ <- function(data, context) {
+     threshold <- p$gte(data[1], 0.5)
+     return(threshold)
+}
+
+# apply the threshold to the cube
+cloud_threshold = dc_cloud %>% mutate(.process = threshold_)
+
+# mask the cloud cover with the calculated mask
+dc_masked <- p$mask(dc_slice, cloud_threshold)
+```
+
+Here what also comes to hand is that you can use openEO API processes as usual on "datacube" classes from openeowrap. This is pretty useful, and the other way around is also possible, if the datacube() constructor is used to recreate a "datacube " class. 
+
+## rename
+
+The rename() function wraps only rename_dimension process. In this, the main idea is just to be able to call the functions inside the pipes. 
+
+```{r rename, echo = TRUE}
+dc_rename = dc_slice %>% rename(.source = "t", .target = "time")
+```
+
+Another interesting point of openeowrap is to have more examples of the multiple usages coming from the differentes API processes. This is still lacking in openEO documentation and it is believed this package could help. This is all been built. 
+
+## resample
+
+As stated, resample() is the single function in the actual stage of openeowrap that is not coming from dplyr, but it is a complete new function. It is ment as an example of a way to simplify different processes into one single wrapped function. 
+
+```{r resample, echo = TRUE}
+dc_resample = dc_slice %>% resample(.resolution = 10/111)
+```
+
+## summarise
+
+The understanding of summarise in openeowrap is quite different than the one in dplyr. In spite of working on the column level, summarise works on all pixels of a given dimension and it wraps the reduce_dimension process. Again, a single function for a single process, therefore allowing it to run in magrittr pipes. 
+
+```{r summarise, echo = TRUE}
+dc_summarised = dc_resample %>% summarise(.dimension = "t", .reducer = mean)
+```
+
+It is important to mention that if you are more familiar with the American English version of summarise, i.e., summarize, this is also available, just like in dplyr. 
+
+## group_by
+
+Finally, we have the group_by() function, which wraps the many aggregators from openEO API. The example below, demonstrates the usage:
+
+```{r group_by, echo = TRUE}
+lon = c(6.09, 6.99)
+lat = c(46.15, 46.57)
+
+bbox_df = tibble(lon, lat)
+pol = st_polygon(
+  list(
+    cbind(
+       bbox_df$lon[c(1,2,2,1,1)],
+       bbox_df$lat[c(1,1,2,2,1)])
+      )
+)
+polygons = st_sfc(pol, crs=4326)
+polygons = st_sf(polygons)
+polygons$anAttribute <- 4
+
+p = openeo::processes()
+
+r = function(data, context) { p$mean(data) }
+
+dc_grouped <- dc %>% group_by(.reducer = r, .geometries = polygons)
+
+```
+
+## Compute Results
+
+In order to demonstrate a long pipe with also exports, the following example is a good representation of the communication between openeo and openeowrap :
+
+```{r}
+dc_wrap = dc %>% 
+  filter(.bands = "CO2") %>% #filter_bands
+  slice(.extent = c("2018-01-01", "2018-01-01")) %>% #filter_temporal
+  slice(.extent = list(west = 6.1, south = 46.1, east = 6.4, north = 46.4)) #filter_bbox
+
+# login()
+# graph = as(dc_wrap,"Graph")
+# compute_result(graph = graph, output_file = "openeowrap.png")
+# png("openeowrap.png")
+```
+
+Here it is also clear how openeowrap functions always print all the underlying openeo processes, which is not only useful for debugging, but maintains a good transparency with openeo, making of it more user-friendly (I hope...).
