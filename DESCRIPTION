@@ -1,0 +1,16 @@
+Package: openeowrap
+Type: Package
+Title: openeowrap : Wrap dplyr functions for openEO datacubes (OpenEOWrap)
+Version: 0.1.0
+Author: Huriel Reichel
+Maintainer: The package maintainer <huriel.reichel@protonmail.com>
+Description: Use standard dplyr functions when working with openEO. The idea is 
+  that openeowrap prevents you from writing so many APIish functions that are not
+  so user-friendly and do not look so much like R. I believe this may scary users
+  from openEO and this package should then help. 
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Depends: R (>= 3.3.3), dplyr, openeo, cli
+Imports: sf
+RoxygenNote: 7.2.1
