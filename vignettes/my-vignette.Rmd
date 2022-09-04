@@ -1,12 +1,10 @@
 ---
-title: "my-vignette"
+title: "openeowrap-vignette"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{my-vignette}
   %\VignetteEncoding{UTF-8}
-  %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
-  chunk_output_type: console
+  %\VignetteEngine{knitr::knitr}
 ---
 
 ```{r, include = FALSE}
@@ -36,7 +34,8 @@ dc_no2 = p$filter_bands(data = dc, bands = "NO2")
 
 We always need to call a *processes()* object and call the desired function from it using the dollar sign. Moreover, we need to memorise too many of these processes in order to use them. In order to help the development of this package, it was thought on the tidyverse and how many application are driving to it. Why not openEO then? This is probably a good way to go. Nevertheless, the aim here was to wrap some of the processes from the openEO API into dplyr's functions, such as the famous *filter*, *mutate*, *slice*, and so on. A guide on how exactly this was wrapped can be seen in the figure below. 
 
-![openEO processes and their relative wrapped functions in openeowrap](struc.png)
+<img src="struc.png" alt="openEO processes and their relative wrapped functions in openeowrap" width="600"/>
+
 Pay attention to the fact that all the functions were wrapped into dplyr's function, in exception to *resample*, which was fully newly created. For this specific case, this is more of an experiment to analyse whether just wrapping into dplyr functions is enough or maybe new functions could also be accepted. In general, as the idea is also to simplify openEO API processes, this came quickly to mind. For sure, as this is work in progress, more processes and wrapped functions shall show up, and even change.  
 
 We hope that with the development of this package, more people from the R community will feel like using openEO for Earth Observation tasks. 

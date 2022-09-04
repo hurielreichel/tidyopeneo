@@ -37,7 +37,7 @@ the original order.}
 \item{.wavelength}{For **filter_bands** : character. A list of sub-lists with
 each sub-list consisting of two elements. The first element is the minimum
 wavelength and the second element is the maximum wavelength. Wavelengths are
-specified in micrometers (μm). The order of the specified array defines the
+specified in micrometers. The order of the specified array defines the
 order of the bands in the data cube. If multiple bands match the wavelengths,
 all matched bands are included in the original order.}
 
