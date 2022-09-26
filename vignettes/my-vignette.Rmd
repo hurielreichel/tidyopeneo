@@ -95,15 +95,14 @@ dc_cloud = dc %>%
   filter(.bands = "CLOUD_FRACTION")
 
 ## mask for cloud cover
-p = openeo::processes()
-
-threshold_ <- function(data, context, processes) {
-     threshold <- processes$gte(data[1], 0.5)
-     return(threshold)
+threshold_ <- function(data, context) {
+  p = openeo::processes()
+  threshold <- p$gte(data[1], 0.5)
+  return(threshold)
 }
 
 # apply the threshold to the cube
-cloud_threshold = dc_cloud %>% mutate(.process = threshold_(processes = p))
+cloud_threshold = dc_cloud %>% mutate(.process = threshold_)
 
 # mask the cloud cover with the calculated mask
 dc_masked <- p$mask(dc_slice, cloud_threshold)
@@ -159,13 +158,21 @@ polygons = st_sfc(pol, crs=4326)
 polygons = st_sf(polygons)
 polygons$anAttribute <- 4
 
-p = openeo::processes()
+r_ = function(data, context) { 
+  p = openeo::processes()
+  p$mean(data)
+  }
 
-r = function(data, context, processes) { processes$mean(data) }
-
-dc_grouped <- dc %>% group_by(.reducer = r(processes = p), .geometries = polygons)
+dc_grouped <- dc %>% group_by(.reducer = r_, .geometries = polygons)
 
 ```
+
+or similarly ...
+
+```{r}
+dc_grouped <- dc %>% group_by(.reducer = "mean", .geometries = polygons)
+```
+
 
 ## Compute Results
 

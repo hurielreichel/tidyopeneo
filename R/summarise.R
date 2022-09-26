@@ -1,4 +1,26 @@
+
+#' @export
+summarise.datacube <- function(.data = NULL, .reducer = NULL,
+                              .dimension = NULL, .context = NULL
+) {
+
+  #con = openeo::connect(host = "https://openeo.cloud")
+  p = openeo::processes()
+
+  # reduce_dimension
+  dc = p$reduce_dimension(data = .data, reducer = .reducer,
+                          dimension = .dimension, context = .context)
+  cli::cli_alert_success("reduce_dimension applied")
+
+  class(dc) = c(class(dc), "datacube")
+
+  dc
+
+}
+
 #' @title Summarise Datacube
+#' @name summarise
+#' @rdname summarise
 #' @description Summarise datacube wraps the reduce_dimension(https://processes.openeo.org/#reduce_dimension),
 #'  function into a simulated dplyr's \code{\link[dplyr]{summarise}}.
 #' @param .data datacube object from tidyopeneo.
@@ -11,6 +33,7 @@
 #' @param .context Additional data to be passed to the reducer (optional).
 #' @return datacube
 #' @import dplyr openeo cli
+#' @importFrom dplyr summarise
 #' @seealso [openeo::list_processes()]
 #' @examples
 #' library(tidyopeneo)
@@ -31,27 +54,5 @@
 #'    filter(.bands = "NO2") %>%
 #'    summarise(.dimension = "t", .reducer = mean)
 #' @export
-summarise <- function(.data = NULL, .reducer = NULL,
-                      .dimension = NULL, .context = NULL) {
-  UseMethod("summarise")
-}
 
-#' @rdname summarise
-#' @export
-summarise.datacube <- function(.data = NULL, .reducer = NULL,
-                              .dimension = NULL, .context = NULL
-) {
-
-  #con = openeo::connect(host = "https://openeo.cloud")
-  p = openeo::processes()
-
-  # reduce_dimension
-  dc = p$reduce_dimension(data = .data, reducer = .reducer,
-                          dimension = .dimension, context = .context)
-  cli::cli_alert_success("reduce_dimension applied")
-
-  class(dc) = c(class(dc), "datacube")
-
-  dc
-
-}
+NULL

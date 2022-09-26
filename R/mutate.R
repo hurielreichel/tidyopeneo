@@ -1,9 +1,69 @@
+
+#' @export
+mutate.datacube <- function(.data = NULL,
+                                .process = NULL, .context = NULL,
+                                .kernel = NULL, .factor = 1, .border = 0,
+                                .replace_invalid = 0, .dimension = NULL, .target_dimension = NULL,
+                                .size = NULL, .overlap = NULL ) {
+
+  #con = openeo::connect(host = "https://openeo.cloud")
+  p = openeo::processes()
+
+  # apply
+  if (all(!is.null(.data), !is.null(.process),
+          is.null(.kernel), is.null(.dimension), is.null(.target_dimension),
+          is.null(.size), is.null(.overlap), is.null(.context))){
+
+    dc = p$apply(data = .data, process = .process, context = .context)
+    cli::cli_alert_success("apply process applied")
+
+  }
+
+  # apply_kernel
+  if (all(!is.null(.data), !is.null(.kernel),
+          is.null(.process), is.null(.context),
+          is.null(.dimension), is.null(.target_dimension),
+          is.null(.size), is.null(.overlap))){
+
+    dc = p$apply_kernel(data = .data, kernel = .kernel,
+                        factor = .factor, border = .border, replace_invalid = .replace_invalid)
+    cli::cli_alert_success("apply_kernel applied")
+
+  }
+
+  # apply_dimension
+  if (all(!is.null(.data), !is.null(.dimension), !is.null(.process),
+          is.null(.kernel), is.null(.size), is.null(.overlap))){
+
+    dc = p$apply_dimension(data = .data, process = .process, dimension = .dimension,
+                           target_dimension = .target_dimension, context = .context)
+    cli::cli_alert_success("apply_dimension applied")
+  }
+
+  # apply_neighborhood
+  if (all(!is.null(.data), !is.null(.process), !is.null(.size),
+          is.null(.dimension), is.null(.target_dimension))){
+
+    dc = p$apply_neighborhood(data = .data, process = .process, size = .size,
+                              overlap = .overlap, context = .context)
+    cli::cli_alert_success("apply_neighborhood applied")
+
+  }
+
+  class(dc) = c(class(dc), "datacube")
+
+  dc
+
+}
+
 #' @title Mutate Datacube
 #' @description Mutate Datacube wraps the apply (https://processes.openeo.org/#apply),
 #' apply_kernel (https://processes.openeo.org/#apply_kernel),
 #' apply_dimension (https://processes.openeo.org/#apply_dimension),
 #' and apply_neighborhood (https://processes.openeo.org/#apply_neighborhood)
 #' from openeo into a simulated dplyr's \code{\link[dplyr]{mutate}}.
+#' @name mutate
+#' @rdname mutate
 #' @param .data datacube object from tidyopeneo.
 #' @param .process for **apply** : A process that accepts and returns a single value
 #' and is applied on each individual value in the data cube. The process may
@@ -64,6 +124,7 @@
 #' For  **apply_neighborhood** define .data, .process, size, and, optionally,
 #' .overlap, and .context.
 #' @seealso [openeo::list_processes()]
+#' @importFrom dplyr mutate
 #' @examples
 #' library(tidyopeneo)
 #'
@@ -103,67 +164,5 @@
 #'
 #' #ToDO : apply_kernel, apply_dimension, apply_neighborhood
 #' @export
-mutate <- function(.data, .process = NULL, .context = NULL,
-                   .kernel = NULL, .factor = 1, .border = 0,
-                   .replace_invalid = 0, .dimension = NULL, .target_dimension = NULL,
-                   .size = NULL, .overlap = NULL) {
-  UseMethod("mutate")
-}
 
-#' @rdname mutate
-#' @export
-mutate.datacube <- function(.data = NULL,
-                                .process = NULL, .context = NULL,
-                                .kernel = NULL, .factor = 1, .border = 0,
-                                .replace_invalid = 0, .dimension = NULL, .target_dimension = NULL,
-                                .size = NULL, .overlap = NULL ) {
-
-  #con = openeo::connect(host = "https://openeo.cloud")
-  p = openeo::processes()
-
-  # apply
-  if (all(!is.null(.data), !is.null(.process),
-          is.null(.kernel), is.null(.dimension), is.null(.target_dimension),
-          is.null(.size), is.null(.overlap), is.null(.context))){
-
-    dc = p$apply(data = .data, process = .process, context = .context)
-    cli::cli_alert_success("apply process applied")
-
-  }
-
-  # apply_kernel
-  if (all(!is.null(.data), !is.null(.kernel),
-          is.null(.process), is.null(.context),
-          is.null(.dimension), is.null(.target_dimension),
-          is.null(.size), is.null(.overlap))){
-
-    dc = p$apply_kernel(data = .data, kernel = .kernel,
-                        factor = .factor, border = .border, replace_invalid = .replace_invalid)
-    cli::cli_alert_success("apply_kernel applied")
-
-  }
-
-  # apply_dimension
-  if (all(!is.null(.data), !is.null(.dimension), !is.null(.process),
-          is.null(.kernel), is.null(.size), is.null(.overlap))){
-
-    dc = p$apply_dimension(data = .data, process = .process, dimension = .dimension,
-                           target_dimension = .target_dimension, context = .context)
-    cli::cli_alert_success("apply_dimension applied")
-  }
-
-  # apply_neighborhood
-  if (all(!is.null(.data), !is.null(.process), !is.null(.size),
-          is.null(.dimension), is.null(.target_dimension))){
-
-    dc = p$apply_neighborhood(data = .data, process = .process, size = .size,
-                              overlap = .overlap, context = .context)
-    cli::cli_alert_success("apply_neighborhood applied")
-
-  }
-
-  class(dc) = c(class(dc), "datacube")
-
-  dc
-
-}
+NULL

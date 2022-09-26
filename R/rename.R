@@ -1,6 +1,27 @@
+
+#' @export
+rename.datacube <- function(.data = NULL, .source, .target
+) {
+
+  #con = openeo::connect(host = "https://openeo.cloud")
+  p = openeo::processes()
+
+  # rename_dimension
+  dc = p$rename_dimension(data = .data, source = .source,
+                          target = .target)
+  cli::cli_alert_success("rename_dimension applied")
+
+  class(dc) = c(class(dc), "datacube")
+
+  dc
+
+}
+
 #' @title Rename Datacube Dimension
 #' @description Rename datacube dimension  wraps the rename_dimension(https://processes.openeo.org/#rename_dimension),
 #'  function into a simulated dplyr's \code{\link[dplyr]{rename}}.
+#' @name rename
+#' @rdname rename
 #' @param .data datacube object from tidyopeneo.
 #' @param .source The current name of the dimension. Fails with a
 #' `DimensionNotAvailable` exception if the specified dimension does not exist.
@@ -9,6 +30,7 @@
 #' @return datacube
 #' @import dplyr openeo cli
 #' @seealso [openeo::list_processes()]
+#' @importFrom dplyr rename
 #' @examples
 #' library(tidyopeneo)
 #'
@@ -28,25 +50,5 @@
 #'    filter(.bands = "NO2") %>%
 #'    rename(.source = "spatial", .target = "space")
 #' @export
-rename <- function(.data = NULL, .source, .target) {
-  UseMethod("rename")
-}
 
-#' @rdname rename
-#' @export
-rename.datacube <- function(.data = NULL, .source, .target
-) {
-
-  #con = openeo::connect(host = "https://openeo.cloud")
-  p = openeo::processes()
-
-  # rename_dimension
-  dc = p$rename_dimension(data = .data, source = .source,
-                          target = .target)
-  cli::cli_alert_success("rename_dimension applied")
-
-  class(dc) = c(class(dc), "datacube")
-
-  dc
-
-}
+NULL

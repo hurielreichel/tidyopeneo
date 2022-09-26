@@ -1,48 +1,4 @@
-#' @title Filter Datacube
-#' @description Filter datacube wraps the filter_bands and filter_labels function
-#' into a simulated dplyr's \code{\link[dplyr]{filter}}.
-#' @param .data datacube object from tidyopeneo.
-#' @param .bands For **filter_bands** : character. A list of band names. Either
-#' the unique band name (metadata field name in bands) or one of the common band
-#' names (metadata field common_name in bands). If the unique band name and the
-#' common name conflict, the unique band name has a higher priority.
-#' The order of the specified array defines the order of the bands in the data
-#' cube. If multiple bands match a common name, all matched bands are included in
-#' the original order.
-#' @param .wavelength For **filter_bands** : character. A list of sub-lists with
-#' each sub-list consisting of two elements. The first element is the minimum
-#' wavelength and the second element is the maximum wavelength. Wavelengths are
-#' specified in micrometers. The order of the specified array defines the
-#' order of the bands in the data cube. If multiple bands match the wavelengths,
-#' all matched bands are included in the original order.
-#' @param .condition For **filter_labels** : logical. A condition that is evaluated
-#' against each dimension label in the specified dimension. A dimension label and
-#' the corresponding data is preserved for the given dimension, if the condition
-#' returns true.
-#' @param .dimension For **filter_labels** (optional) : character The name of the dimension
-#'  to filter on. Fails with a DimensionNotAvailable exception if the specified
-#'  dimension does not exist.
-#' @param .context For **filter_labels** (optional) : any Additional data to be passed to the condition.
-#' @return datacube
-#' @import dplyr openeo cli
-#' @details if args bands and/or wavelengths are defined,
-#' openeo::list_processes()$filter_bands
-#' will be invoked. If condition and dimensions are defined,
-#' openeo::list_processes()$filter_labels
-#' will be called.
-#' @seealso [openeo::list_processes()]
-#' @examples
-#' library(tidyopeneo)
-#' dc = datacube(id = "SENTINEL_5P_L2")
-#'
-#' dc_no2 <- dc %>% filter(.bands = "NO2")
-#' @export
-filter <- function(.data = NULL, .bands = NULL, .wavelength = NULL,
-                   .condition = NULL, .dimension = NULL, .context = NULL) {
-  UseMethod("filter")
-}
 
-#' @rdname filter
 #' @export
 filter.datacube <- function(.data = NULL,
                             .bands = NULL, .wavelength = NULL,
@@ -87,3 +43,48 @@ filter.datacube <- function(.data = NULL,
   dc
 
 }
+
+#' @title Filter Datacube
+#' @description Filter datacube wraps the filter_bands and filter_labels function
+#' into a simulated dplyr's \code{\link[dplyr]{filter}}.
+#' @name filter
+#' @rdname filter
+#' @param .data datacube object from tidyopeneo.
+#' @param .bands For **filter_bands** : character. A list of band names. Either
+#' the unique band name (metadata field name in bands) or one of the common band
+#' names (metadata field common_name in bands). If the unique band name and the
+#' common name conflict, the unique band name has a higher priority.
+#' The order of the specified array defines the order of the bands in the data
+#' cube. If multiple bands match a common name, all matched bands are included in
+#' the original order.
+#' @param .wavelength For **filter_bands** : character. A list of sub-lists with
+#' each sub-list consisting of two elements. The first element is the minimum
+#' wavelength and the second element is the maximum wavelength. Wavelengths are
+#' specified in micrometers. The order of the specified array defines the
+#' order of the bands in the data cube. If multiple bands match the wavelengths,
+#' all matched bands are included in the original order.
+#' @param .condition For **filter_labels** : logical. A condition that is evaluated
+#' against each dimension label in the specified dimension. A dimension label and
+#' the corresponding data is preserved for the given dimension, if the condition
+#' returns true.
+#' @param .dimension For **filter_labels** (optional) : character The name of the dimension
+#'  to filter on. Fails with a DimensionNotAvailable exception if the specified
+#'  dimension does not exist.
+#' @param .context For **filter_labels** (optional) : any Additional data to be passed to the condition.
+#' @return datacube
+#' @import dplyr openeo cli
+#' @details if args bands and/or wavelengths are defined,
+#' openeo::list_processes()$filter_bands
+#' will be invoked. If condition and dimensions are defined,
+#' openeo::list_processes()$filter_labels
+#' will be called.
+#' @seealso [openeo::list_processes()]
+#' @importFrom dplyr filter
+#' @examples
+#' library(tidyopeneo)
+#' dc = datacube(id = "SENTINEL_5P_L2")
+#'
+#' dc_no2 <- dc %>% filter(.bands = "NO2")
+#' @export
+
+NULL
