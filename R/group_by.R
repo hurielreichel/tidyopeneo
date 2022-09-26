@@ -3,7 +3,7 @@
 #' aggregate_spatial (https://processes.openeo.org/#aggregate_spatial),
 #' and aggregate_temporal(https://processes.openeo.org/#aggregate_temporal),
 #'  functions into a simulated dplyr's \code{\link[dplyr]{group_by}}.
-#' @param .data datacube object from openeowrap
+#' @param .data datacube object from tidyopeneo
 #' @param .period For **aggregate_temporal_period** : The time intervals to aggregate.
 #' The following pre-defined values are available:* `hour`: Hour of the day* `day`:
 #' Day of the year* `week`: Week of the year* `dekad`: Ten day periods,
@@ -73,7 +73,7 @@
 #' aggregate_temporal runs.
 #' @seealso [openeo::list_processes()]
 #' @examples
-#' library(openeowrap)
+#' library(tidyopeneo)
 #' library(sf)
 #'
 #' # bounding box

@@ -1,7 +1,7 @@
 #' @title Summarise Datacube
 #' @description Summarise datacube wraps the reduce_dimension(https://processes.openeo.org/#reduce_dimension),
 #'  function into a simulated dplyr's \code{\link[dplyr]{summarise}}.
-#' @param .data datacube object from openeowrap.
+#' @param .data datacube object from tidyopeneo.
 #' @param .reducer A reducer to apply on the specified dimension.
 #' A reducer is a single process such as ``mean()`` or a set of processes, which
 #' computes a single value for a list of values, see the category 'reducer'
@@ -13,7 +13,7 @@
 #' @import dplyr openeo cli
 #' @seealso [openeo::list_processes()]
 #' @examples
-#' library(openeowrap)
+#' library(tidyopeneo)
 #'
 #' # bounding box
 #' w = 6.09

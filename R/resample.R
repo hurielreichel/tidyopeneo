@@ -3,7 +3,7 @@
 #' resample_cube_spatial (https://processes.openeo.org/#resample_cube_spatial),
 #' and resample_cube_temporal(https://processes.openeo.org/#resample_cube_temporal),
 #'  functions into a newly created resample function, therefore simplifying it.
-#' @param .data datacube object from openeowrap
+#' @param .data datacube object from tidyopeneo
 #' @param .resolution For **resample_spatial** : Resamples the data cube to the
 #' target resolution, which can be specified either as separate values for x and
 #' y or as a single value for both axes. Specified in the units of the target
@@ -60,7 +60,7 @@
 #' @seealso [openeo::list_processes()]
 #' @import dplyr openeo cli
 #' @examples
-#' library(openeowrap)
+#' library(tidyopeneo)
 #'
 #' # bounding box
 #' w = 6.09

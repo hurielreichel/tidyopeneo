@@ -1,7 +1,7 @@
 #' @title Filter Datacube
 #' @description Filter datacube wraps the filter_bands and filter_labels function
 #' into a simulated dplyr's \code{\link[dplyr]{filter}}.
-#' @param .data datacube object from openeowrap.
+#' @param .data datacube object from tidyopeneo.
 #' @param .bands For **filter_bands** : character. A list of band names. Either
 #' the unique band name (metadata field name in bands) or one of the common band
 #' names (metadata field common_name in bands). If the unique band name and the
@@ -32,7 +32,7 @@
 #' will be called.
 #' @seealso [openeo::list_processes()]
 #' @examples
-#' library(openeowrap)
+#' library(tidyopeneo)
 #' dc = datacube(id = "SENTINEL_5P_L2")
 #'
 #' dc_no2 <- dc %>% filter(.bands = "NO2")
@@ -54,7 +54,7 @@ filter.datacube <- function(.data = NULL,
   if (is.null(.data)) {
     cli::cli_alert_danger(
       "a datacube of class 'ProcessNode' and 'datacube' from
-      openeowrap must be passed"
+      tidyopeneo must be passed"
       )}
 
   if (!is.null(length(.bands)) | !is.null(.wavelength)) {

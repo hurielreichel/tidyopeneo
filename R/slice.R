@@ -1,7 +1,7 @@
 #' @title Slice Datacube
 #' @description Slice datacube wraps the filter_temporal, filter_bbox,
 #' filter_spatial and array_filter functions into a simulated dplyr's \code{\link[dplyr]{slice}}.
-#' @param .data datacube object from openeowrap. For
+#' @param .data datacube object from tidyopeneo. For
 #' array_filter : an array.
 #' @param .extent For **filter_temporal**, the Left-closed temporal interval, i.e.
 #' an array with exactly two elements: The first element is the start of the
@@ -31,7 +31,7 @@
 #' finally, if .data is an array, array_filter will be wrapped.
 #' @seealso [openeo::list_processes()]
 #' @examples
-#' library(openeowrap)
+#' library(tidyopeneo)
 #' library(sf)
 #'
 #' dc = datacube(id = "SENTINEL_5P_L2")

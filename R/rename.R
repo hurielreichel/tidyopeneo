@@ -1,7 +1,7 @@
 #' @title Rename Datacube Dimension
 #' @description Rename datacube dimension  wraps the rename_dimension(https://processes.openeo.org/#rename_dimension),
 #'  function into a simulated dplyr's \code{\link[dplyr]{rename}}.
-#' @param .data datacube object from openeowrap.
+#' @param .data datacube object from tidyopeneo.
 #' @param .source The current name of the dimension. Fails with a
 #' `DimensionNotAvailable` exception if the specified dimension does not exist.
 #' @param .target A new Name for the dimension. Fails with a `DimensionExists`
@@ -10,7 +10,7 @@
 #' @import dplyr openeo cli
 #' @seealso [openeo::list_processes()]
 #' @examples
-#' library(openeowrap)
+#' library(tidyopeneo)
 #'
 #' # bounding box
 #' w = 6.09

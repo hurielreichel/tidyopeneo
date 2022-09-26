@@ -4,7 +4,7 @@
 #' apply_dimension (https://processes.openeo.org/#apply_dimension),
 #' and apply_neighborhood (https://processes.openeo.org/#apply_neighborhood)
 #' from openeo into a simulated dplyr's \code{\link[dplyr]{mutate}}.
-#' @param .data datacube object from openeowrap.
+#' @param .data datacube object from tidyopeneo.
 #' @param .process for **apply** : A process that accepts and returns a single value
 #' and is applied on each individual value in the data cube. The process may
 #' consist of multiple sub-processes and could, for example, consist of processes
@@ -65,7 +65,7 @@
 #' .overlap, and .context.
 #' @seealso [openeo::list_processes()]
 #' @examples
-#' library(openeowrap)
+#' library(tidyopeneo)
 #'
 #' dc = datacube(id = "SENTINEL_5P_L2")
 #'
