@@ -51,7 +51,7 @@ summarise.datacube <- function(.data = NULL, .reducer = NULL,
 #'dc = datacube("SENTINEL_5P_L2") %>%
 #'    slice(.extent = list(west = w, south = s, east = e, north = n)) %>%
 #'    slice(.extent = c(date1, date2)) %>%
-#'    filter(.bands = "NO2") %>%
+#'    select(.bands = "NO2") %>%
 #'    summarise(.dimension = "t", .reducer = mean)
 #' @export
 

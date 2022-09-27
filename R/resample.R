@@ -75,7 +75,7 @@
 #'dc = datacube("SENTINEL_5P_L2") %>%
 #'    slice(.extent = list(west = w, south = s, east = e, north = n)) %>%
 #'    slice(.extent = c(date1, date2)) %>%
-#'    filter(.bands = "NO2") %>%
+#'    select(.bands = "NO2") %>%
 #'    resample(.resolution = 10/111)
 #' @export
 resample <- function(.data = NULL, .resolution = 0, .projection = NULL,

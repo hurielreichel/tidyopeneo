@@ -3,7 +3,7 @@ test_that("rename() creates an object of class 'datacube'", {
   dc = datacube("SENTINEL_5P_L2") %>%
       slice(.extent = list(west = 6.09, south = 46.15, east = 6.99, north = 46.5)) %>%
       slice(.extent = c("2018-07-01","2018-10-31")) %>%
-      filter(.bands = "NO2") %>%
+      select(.bands = "NO2") %>%
       rename(.source = "spatial", .target = "space")
 
   expect_equal(

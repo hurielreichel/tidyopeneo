@@ -5,7 +5,7 @@ library(sf)
 dc = datacube("SENTINEL_5P_L2") %>%
       slice(.extent = list(west = 6.09, south = 46.15, east = 6.99, north = 46.5)) %>%
       slice(.extent = c("2018-07-01","2018-10-31")) %>%
-      filter(.bands = "NO2")
+      select(.bands = "NO2")
 
   lon = c(6.09, 6.99)
   lat = c(46.15, 46.5)

@@ -55,8 +55,8 @@ dc = datacube(id = "SENTINEL_5P_L2")
 From now on, we can work completely in a *tidy* syntax and use even the infamous pipes ( %>% ). The first example below demonstrates the filter_bands process and how it is wrapped in tidyopeneo. 
 
 ```{r filter, echo=TRUE}
-dc_filter = dc %>% filter(.bands = "NO2")
-dc_filter = dc %>% filter(.bands = "CO2")
+dc_filter = dc %>% select(.bands = "NO2")
+dc_filter = dc %>% select(.bands = "CO2")
 ```
 
 ## slice
@@ -92,7 +92,7 @@ The mutate() function is also a big wrapper. It includes four processes again an
 dc_cloud = dc %>% 
   slice(.extent = c("2018-01-01", "2018-01-02")) %>% #filter_temporal
   slice(.extent = list(west = 6.09, south = 46.15, east = 6.99, north = 46.57)) %>%  #filter_bbox
-  filter(.bands = "CLOUD_FRACTION")
+  select(.bands = "CLOUD_FRACTION")
 
 ## mask for cloud cover
 threshold_ <- function(data, context) {
@@ -180,7 +180,7 @@ In order to demonstrate a long pipe with also exports, the following example is 
 
 ```{r}
 dc_wrap = dc %>% 
-  filter(.bands = "CO2") %>% #filter_bands
+  select(.bands = "CO2") %>% #filter_bands
   slice(.extent = c("2018-01-01", "2018-01-01")) %>% #filter_temporal
   slice(.extent = list(west = 6.1, south = 46.1, east = 6.4, north = 46.4)) #filter_bbox
 

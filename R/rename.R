@@ -47,7 +47,7 @@ rename.datacube <- function(.data = NULL, .source, .target
 #' dc = datacube("SENTINEL_5P_L2") %>%
 #'    slice(.extent = list(west = w, south = s, east = e, north = n)) %>%
 #'    slice(.extent = c(date1, date2)) %>%
-#'    filter(.bands = "NO2") %>%
+#'    select(.bands = "NO2") %>%
 #'    rename(.source = "spatial", .target = "space")
 #' @export
 
