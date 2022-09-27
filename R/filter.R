@@ -1,7 +1,6 @@
 
 #' @export
 filter.datacube <- function(.data = NULL,
-                            .bands = NULL, .wavelength = NULL,
                             .condition = NULL, .dimension = NULL, .context = NULL) {
 
   #con = openeo::connect(host = "https://openeo.cloud")
