@@ -1,7 +1,7 @@
 
 #' @export
 select.datacube <- function(.data = NULL,
-                            .bands = NULL, .wavelength = NULL) {
+                            .bands = NULL, .wavelength = NULL, ...) {
 
   #con = openeo::connect(host = "https://openeo.cloud")
   p = openeo::processes()

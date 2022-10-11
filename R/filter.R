@@ -1,7 +1,27 @@
 
+#' @title Filter Datacube
+#' @description Filter datacube wraps the filter_labels function
+#' into a simulated dplyr's \code{\link[dplyr]{filter}}.
+#' @name filter
+#' @rdname filter
+#' @param .data datacube object from tidyopeneo.
+#' @param .condition logical. A condition that is evaluated
+#' against each dimension label in the specified dimension. A dimension label and
+#' the corresponding data is preserved for the given dimension, if the condition
+#' returns true.
+#' @param .dimension (optional) : character The name of the dimension
+#'  to filter on. Fails with a DimensionNotAvailable exception if the specified
+#'  dimension does not exist.
+#' @param .context (optional) : any Additional data to be passed to the condition.
+#' @return datacube
+#' @import dplyr openeo cli
+#' @seealso [openeo::list_processes()]
+#' @importFrom dplyr filter
+#' @examples
+#' # TODO
 #' @export
 filter.datacube <- function(.data = NULL,
-                            .condition = NULL, .dimension = NULL, .context = NULL) {
+                            .condition = NULL, .dimension = NULL, .context = NULL, ...) {
 
   #con = openeo::connect(host = "https://openeo.cloud")
   p = openeo::processes()
@@ -30,27 +50,3 @@ filter.datacube <- function(.data = NULL,
   dc
 
 }
-
-#' @title Filter Datacube
-#' @description Filter datacube wraps the filter_labels function
-#' into a simulated dplyr's \code{\link[dplyr]{filter}}.
-#' @name filter
-#' @rdname filter
-#' @param .data datacube object from tidyopeneo.
-#' @param .condition logical. A condition that is evaluated
-#' against each dimension label in the specified dimension. A dimension label and
-#' the corresponding data is preserved for the given dimension, if the condition
-#' returns true.
-#' @param .dimension (optional) : character The name of the dimension
-#'  to filter on. Fails with a DimensionNotAvailable exception if the specified
-#'  dimension does not exist.
-#' @param .context (optional) : any Additional data to be passed to the condition.
-#' @return datacube
-#' @import dplyr openeo cli
-#' @seealso [openeo::list_processes()]
-#' @importFrom dplyr filter
-#' @examples
-#' # TODO
-#' @export
-
-NULL

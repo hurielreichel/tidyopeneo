@@ -2,7 +2,11 @@
 % Please edit documentation in R/summarise.R
 \name{summarise}
 \alias{summarise}
+\alias{summarise.datacube}
 \title{Summarise Datacube}
+\usage{
+\method{summarise}{datacube}(.data = NULL, .reducer = NULL, .dimension = NULL, .context = NULL)
+}
 \arguments{
 \item{.data}{datacube object from tidyopeneo.}
 

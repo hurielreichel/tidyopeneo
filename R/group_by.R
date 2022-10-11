@@ -1,72 +1,4 @@
 
-#' @export
-group_by.datacube <- function(.data = NULL, .period = NULL, .reducer = NULL,
-                              .dimension = NULL, .context = NULL,
-                              .geometries = NULL, .target_dimension = "result",
-                              .intervals = NULL, .labels = array()
-                              ) {
-
-  #con = openeo::connect(host = "https://openeo.cloud")
-  p = openeo::processes()
-
-  # if reducer is present, it can be either a function call or a function name as string
-  if (all( !is.null(.reducer), is.null(environment(.reducer)))){
-
-    if (.reducer == "mean"){
-      .reducer = function(data, context) {p$mean(data)}
-    }else if (.reducer == "sum"){
-      .reducer = function(data, context) {p$sum(data)}
-    }else if (.reducer == "max"){
-      .reducer = function(data, context) {p$max(data)}
-    }else if (.reducer == "min"){
-      .reducer = function(data, context) {p$min(data)}
-    }else if (.reducer == "first"){
-      .reducer = function(data, context) {p$first(data)}
-    }else if (.reducer == "last"){
-      .reducer = function(data, context) {p$last(data)}
-    }else if (.reducer == "count"){
-      .reducer = function(data, context) {p$count(data)}
-    }else if (.reducer == "median"){
-      .reducer = function(data, context) {p$median(data)}
-    }else if (.reducer == "sd"){
-      .reducer = function(data, context) {p$sd(data)}
-    }else if (.reducer == "variance"){
-      .reducer = function(data, context) {p$variance(data)}
-    }else if (.reducer == "product"){
-      .reducer = function(data, context) {p$product(data)}
-    }else{cli::format_error("reducer not implemented. Did you misspell it or maybe you'd prefer a UDF?")}
-  }
-
-  # aggregate_temporal_period
-  if (all(!is.null(.data), !is.null(.period), is.null(.geometries), is.null(.intervals))) {
-    dc = p$aggregate_temporal_period(data = .data, period = .period, reducer = .reducer,
-                                     dimension = .dimension, context = .context)
-    cli::cli_alert_success("aggregate_temporal_period applied")
-  }
-
-  # aggregate_spatial
-  if (all(!is.null(.data), !is.null(.geometries), is.null(.period), is.null(.intervals))) {
-
-    dc = p$aggregate_spatial(data = .data, geometries = .geometries,
-                             reducer = .reducer, target_dimension = .target_dimension,
-                             context = .context)
-    cli::cli_alert_success("aggregate_spatial applied")
-  }
-
-  # aggregate_temporal
-  if (all(!is.null(.data), is.null(.geometries), is.null(.period), !is.null(.intervals))) {
-    dc = p$aggregate_temporal(data = .data, intervals = .intervals,
-                             reducer = .reducer, dimension = .dimension,
-                             context = .context)
-    cli::cli_alert_success("aggregate_temporal applied")
-  }
-
-  class(dc) = c(class(dc), "datacube")
-
-  dc
-
-}
-
 #' @title Group by Datacube
 #' @description Group by datacube wraps the aggregate_temporal_period(https://processes.openeo.org/#aggregate_temporal_period),
 #' aggregate_spatial (https://processes.openeo.org/#aggregate_spatial),
@@ -191,5 +123,70 @@ group_by.datacube <- function(.data = NULL, .period = NULL, .reducer = NULL,
 #' dc_mean <- dc %>% group_by(.reducer = "mean",
 #'     .geometries = polygons)
 #' @export
+group_by.datacube <- function(.data = NULL, .period = NULL, .reducer = NULL,
+                              .dimension = NULL, .context = NULL,
+                              .geometries = NULL, .target_dimension = "result",
+                              .intervals = NULL, .labels = array(), ...
+                              ) {
 
-NULL
+  #con = openeo::connect(host = "https://openeo.cloud")
+  p = openeo::processes()
+
+  # if reducer is present, it can be either a function call or a function name as string
+  if (all( !is.null(.reducer), is.null(environment(.reducer)))){
+
+    if (.reducer == "mean"){
+      .reducer = function(data, context) {p$mean(data)}
+    }else if (.reducer == "sum"){
+      .reducer = function(data, context) {p$sum(data)}
+    }else if (.reducer == "max"){
+      .reducer = function(data, context) {p$max(data)}
+    }else if (.reducer == "min"){
+      .reducer = function(data, context) {p$min(data)}
+    }else if (.reducer == "first"){
+      .reducer = function(data, context) {p$first(data)}
+    }else if (.reducer == "last"){
+      .reducer = function(data, context) {p$last(data)}
+    }else if (.reducer == "count"){
+      .reducer = function(data, context) {p$count(data)}
+    }else if (.reducer == "median"){
+      .reducer = function(data, context) {p$median(data)}
+    }else if (.reducer == "sd"){
+      .reducer = function(data, context) {p$sd(data)}
+    }else if (.reducer == "variance"){
+      .reducer = function(data, context) {p$variance(data)}
+    }else if (.reducer == "product"){
+      .reducer = function(data, context) {p$product(data)}
+    }else{
+      cli::format_error("reducer not implemented. Did you misspell it or maybe you'd prefer a UDF?")}
+  }
+
+  # aggregate_temporal_period
+  if (all(!is.null(.data), !is.null(.period), is.null(.geometries), is.null(.intervals))) {
+    dc = p$aggregate_temporal_period(data = .data, period = .period, reducer = .reducer,
+                                     dimension = .dimension, context = .context)
+    cli::cli_alert_success("aggregate_temporal_period applied")
+  }
+
+  # aggregate_spatial
+  if (all(!is.null(.data), !is.null(.geometries), is.null(.period), is.null(.intervals))) {
+
+    dc = p$aggregate_spatial(data = .data, geometries = .geometries,
+                             reducer = .reducer, target_dimension = .target_dimension,
+                             context = .context)
+    cli::cli_alert_success("aggregate_spatial applied")
+  }
+
+  # aggregate_temporal
+  if (all(!is.null(.data), is.null(.geometries), is.null(.period), !is.null(.intervals))) {
+    dc = p$aggregate_temporal(data = .data, intervals = .intervals,
+                             reducer = .reducer, dimension = .dimension,
+                             context = .context)
+    cli::cli_alert_success("aggregate_temporal applied")
+  }
+
+  class(dc) = c(class(dc), "datacube")
+
+  dc
+
+}

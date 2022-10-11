@@ -2,7 +2,23 @@
 % Please edit documentation in R/mutate.R
 \name{mutate}
 \alias{mutate}
+\alias{mutate.datacube}
 \title{Mutate Datacube}
+\usage{
+\method{mutate}{datacube}(
+  .data = NULL,
+  .process = NULL,
+  .context = NULL,
+  .kernel = NULL,
+  .factor = 1,
+  .border = 0,
+  .replace_invalid = 0,
+  .dimension = NULL,
+  .target_dimension = NULL,
+  .size = NULL,
+  .overlap = NULL
+)
+}
 \arguments{
 \item{.data}{datacube object from tidyopeneo.}
 

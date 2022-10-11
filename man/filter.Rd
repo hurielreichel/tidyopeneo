@@ -2,7 +2,11 @@
 % Please edit documentation in R/filter.R
 \name{filter}
 \alias{filter}
+\alias{filter.datacube}
 \title{Filter Datacube}
+\usage{
+\method{filter}{datacube}(.data = NULL, .condition = NULL, .dimension = NULL, .context = NULL)
+}
 \arguments{
 \item{.data}{datacube object from tidyopeneo.}
 

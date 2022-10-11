@@ -2,7 +2,11 @@
 % Please edit documentation in R/rename.R
 \name{rename}
 \alias{rename}
+\alias{rename.datacube}
 \title{Rename Datacube Dimension}
+\usage{
+\method{rename}{datacube}(.data = NULL, .source, .target)
+}
 \arguments{
 \item{.data}{datacube object from tidyopeneo.}
 

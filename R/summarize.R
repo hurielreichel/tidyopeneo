@@ -1,23 +1,3 @@
-
-#' @export
-summarize.datacube <- function(.data = NULL, .reducer = NULL,
-                               .dimension = NULL, .context = NULL
-) {
-
-  #con = openeo::connect(host = "https://openeo.cloud")
-  p = openeo::processes()
-
-  # reduce_dimension
-  dc = p$reduce_dimension(data = .data, reducer = .reducer,
-                          dimension = .dimension, context = .context)
-  cli::cli_alert_success("reduce_dimension applied")
-
-  class(dc) = c(class(dc), "datacube")
-
-  dc
-
-}
-
 #' @title Summarize Datacube
 #' @description Summarize datacube wraps the reduce_dimension(https://processes.openeo.org/#reduce_dimension),
 #'  function into a simulated dplyr's \code{\link[dplyr]{summarize}}.
@@ -54,5 +34,20 @@ summarize.datacube <- function(.data = NULL, .reducer = NULL,
 #'    select(.bands = "NO2") %>%
 #'    summarize(.dimension = "t", .reducer = mean)
 #' @export
+summarize.datacube <- function(.data = NULL, .reducer = NULL,
+                               .dimension = NULL, .context = NULL, ...
+) {
 
-NULL
+  #con = openeo::connect(host = "https://openeo.cloud")
+  p = openeo::processes()
+
+  # reduce_dimension
+  dc = p$reduce_dimension(data = .data, reducer = .reducer,
+                          dimension = .dimension, context = .context)
+  cli::cli_alert_success("reduce_dimension applied")
+
+  class(dc) = c(class(dc), "datacube")
+
+  dc
+
+}

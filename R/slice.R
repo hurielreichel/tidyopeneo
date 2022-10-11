@@ -1,51 +1,3 @@
-
-#' @export
-slice.datacube <- function(.data = NULL,
-                           .extent = NULL, .dimension = NULL,
-                           .geometries = NULL,
-                           .condition = NULL, .context = NULL) {
-
-  #con = openeo::connect(host = "https://openeo.cloud")
-  p = openeo::processes()
-
-  #filter_temporal
-  if (length(.extent) == 2 & is.null(.geometries) & is.null(.condition)&
-      is.null(.context)){
-    dc = p$filter_temporal(data = .data, extent = .extent, dimension = .dimension)
-    cli::cli_alert_success("filter_temporal applied")
-
-  #filter_bbox
-  } else if (length(.extent == 4) & is.null(.geometries) & is.null(.condition)&
-             is.null(.context)) {
-    dc = p$filter_bbox(data = .data, extent = .extent)
-    cli::cli_alert_success("filter_bbox applied")
-
-  } else if (length(.extent != 2) | length(.extent != 4)){
-    cli::cli_alert_danger(paste0("if willing to perform a filter_temporal, extent must be length 2,", "\n",
-    "else if willing to perform a filter_bbox length extension must be 4.",  "\n",
-    "You object has length ", length(.extent)))
-  }
-
-  #filter_spatial
-  if (!is.null(.geometries) & is.null(.extent) & is.null(.condition) &
-      is.null(.context) & is.null(.dimension)) {
-    dc = p$filter_spatial(data = .data, geometries = .geometries)
-    cli::cli_alert_success("filter_spatial applied")
-  }
-
-  #array_filter
-  if (all(is.null(.geometries), is.null(.extent), !is.null(.condition),
-      is.null(.dimension))) {
-    dc = p$array_filter(data = .data, condition = .condition, context = .context)
-    cli::cli_alert_success("array_filter applied")
-
-  }
-  class(dc) = c(class(dc), "datacube")
-
-  dc
-
-}
-
 #' @title Slice Datacube
 #' @description Slice datacube wraps the filter_temporal, filter_bbox,
 #' filter_spatial and array_filter functions into a simulated dplyr's \code{\link[dplyr]{slice}}.
@@ -106,5 +58,48 @@ slice.datacube <- function(.data = NULL,
 #' # array_filter
 #' # ToDO...
 #' @export
+slice.datacube <- function(.data = NULL,
+                           .extent = NULL, .dimension = NULL,
+                           .geometries = NULL,
+                           .condition = NULL, .context = NULL, ...) {
 
-NULL
+  #con = openeo::connect(host = "https://openeo.cloud")
+  p = openeo::processes()
+
+  #filter_temporal
+  if (length(.extent) == 2 & is.null(.geometries) & is.null(.condition)&
+      is.null(.context)){
+    dc = p$filter_temporal(data = .data, extent = .extent, dimension = .dimension)
+    cli::cli_alert_success("filter_temporal applied")
+
+  #filter_bbox
+  } else if (length(.extent == 4) & is.null(.geometries) & is.null(.condition)&
+             is.null(.context)) {
+    dc = p$filter_bbox(data = .data, extent = .extent)
+    cli::cli_alert_success("filter_bbox applied")
+
+  } else if (length(.extent != 2) | length(.extent != 4)){
+    cli::cli_alert_danger(paste0("if willing to perform a filter_temporal, extent must be length 2,", "\n",
+    "else if willing to perform a filter_bbox length extension must be 4.",  "\n",
+    "You object has length ", length(.extent)))
+  }
+
+  #filter_spatial
+  if (!is.null(.geometries) & is.null(.extent) & is.null(.condition) &
+      is.null(.context) & is.null(.dimension)) {
+    dc = p$filter_spatial(data = .data, geometries = .geometries)
+    cli::cli_alert_success("filter_spatial applied")
+  }
+
+  #array_filter
+  if (all(is.null(.geometries), is.null(.extent), !is.null(.condition),
+      is.null(.dimension))) {
+    dc = p$array_filter(data = .data, condition = .condition, context = .context)
+    cli::cli_alert_success("array_filter applied")
+
+  }
+  class(dc) = c(class(dc), "datacube")
+
+  dc
+
+}

@@ -1,22 +1,3 @@
-
-#' @export
-rename.datacube <- function(.data = NULL, .source, .target
-) {
-
-  #con = openeo::connect(host = "https://openeo.cloud")
-  p = openeo::processes()
-
-  # rename_dimension
-  dc = p$rename_dimension(data = .data, source = .source,
-                          target = .target)
-  cli::cli_alert_success("rename_dimension applied")
-
-  class(dc) = c(class(dc), "datacube")
-
-  dc
-
-}
-
 #' @title Rename Datacube Dimension
 #' @description Rename datacube dimension  wraps the rename_dimension(https://processes.openeo.org/#rename_dimension),
 #'  function into a simulated dplyr's \code{\link[dplyr]{rename}}.
@@ -50,5 +31,19 @@ rename.datacube <- function(.data = NULL, .source, .target
 #'    select(.bands = "NO2") %>%
 #'    rename(.source = "spatial", .target = "space")
 #' @export
+rename.datacube <- function(.data = NULL, .source, .target, ...
+) {
 
-NULL
+  #con = openeo::connect(host = "https://openeo.cloud")
+  p = openeo::processes()
+
+  # rename_dimension
+  dc = p$rename_dimension(data = .data, source = .source,
+                          target = .target)
+  cli::cli_alert_success("rename_dimension applied")
+
+  class(dc) = c(class(dc), "datacube")
+
+  dc
+
+}

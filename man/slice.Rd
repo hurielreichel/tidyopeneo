@@ -2,7 +2,18 @@
 % Please edit documentation in R/slice.R
 \name{slice}
 \alias{slice}
+\alias{slice.datacube}
 \title{Slice Datacube}
+\usage{
+\method{slice}{datacube}(
+  .data = NULL,
+  .extent = NULL,
+  .dimension = NULL,
+  .geometries = NULL,
+  .condition = NULL,
+  .context = NULL
+)
+}
 \arguments{
 \item{.data}{datacube object from tidyopeneo. For
 array_filter : an array.}

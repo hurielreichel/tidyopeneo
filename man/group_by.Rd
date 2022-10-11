@@ -2,7 +2,21 @@
 % Please edit documentation in R/group_by.R
 \name{group_by}
 \alias{group_by}
+\alias{group_by.datacube}
 \title{Group by Datacube}
+\usage{
+\method{group_by}{datacube}(
+  .data = NULL,
+  .period = NULL,
+  .reducer = NULL,
+  .dimension = NULL,
+  .context = NULL,
+  .geometries = NULL,
+  .target_dimension = "result",
+  .intervals = NULL,
+  .labels = array()
+)
+}
 \arguments{
 \item{.data}{datacube object from tidyopeneo}
 
