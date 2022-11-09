@@ -5,10 +5,12 @@
 \alias{rename.datacube}
 \title{Rename Datacube Dimension}
 \usage{
-\method{rename}{datacube}(.data = NULL, .source, .target)
+\method{rename}{datacube}(.data = NULL, ..., .source, .target)
 }
 \arguments{
 \item{.data}{datacube object from tidyopeneo.}
+
+\item{...}{any parameter inherited from dplyr}
 
 \item{.source}{The current name of the dimension. Fails with a
 `DimensionNotAvailable` exception if the specified dimension does not exist.}

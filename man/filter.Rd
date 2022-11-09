@@ -5,10 +5,18 @@
 \alias{filter.datacube}
 \title{Filter Datacube}
 \usage{
-\method{filter}{datacube}(.data = NULL, .condition = NULL, .dimension = NULL, .context = NULL)
+\method{filter}{datacube}(
+  .data = NULL,
+  ...,
+  .condition = NULL,
+  .dimension = NULL,
+  .context = NULL
+)
 }
 \arguments{
 \item{.data}{datacube object from tidyopeneo.}
+
+\item{...}{any parameter inherited from dplyr}
 
 \item{.condition}{logical. A condition that is evaluated
 against each dimension label in the specified dimension. A dimension label and

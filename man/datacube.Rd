@@ -4,7 +4,7 @@
 \alias{datacube}
 \title{Create Datacube Class}
 \usage{
-datacube(id, data = NULL)
+datacube(id, data = NULL, .con = NULL)
 }
 \arguments{
 \item{id}{character containing the collection name to be passed to
@@ -12,6 +12,8 @@ openeo::processes()$load_collection() (https://processes.openeo.org/#load_collec
 This is understood as the **starting point** when working with tidyopeneo. (optional)}
 
 \item{data}{ProcessNode datacube from openeo (optional)}
+
+\item{.con}{character link to openeo connection. Default to "https://openeo.cloud"}
 }
 \value{
 datacube

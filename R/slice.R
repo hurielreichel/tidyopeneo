@@ -5,6 +5,7 @@
 #' @rdname slice
 #' @param .data datacube object from tidyopeneo. For
 #' array_filter : an array.
+#' @param ... any parameter inherited from dplyr
 #' @param .extent For **filter_temporal**, the Left-closed temporal interval, i.e.
 #' an array with exactly two elements: The first element is the start of the
 #' temporal interval. The specified instance in time is **included** in the
@@ -58,13 +59,22 @@
 #' # array_filter
 #' # ToDO...
 #' @export
-slice.datacube <- function(.data = NULL,
+slice.datacube <- function(.data = NULL, ...,
                            .extent = NULL, .dimension = NULL,
                            .geometries = NULL,
-                           .condition = NULL, .context = NULL, ...) {
+                           .condition = NULL, .context = NULL) {
 
   #con = openeo::connect(host = "https://openeo.cloud")
   p = openeo::processes()
+
+  #check dots ...
+  dots = list(...)
+
+  for (i in dots){
+    if (length(dots) != 0){
+      inherits(dots)
+   }
+ }
 
   #filter_temporal
   if (length(.extent) == 2 & is.null(.geometries) & is.null(.condition)&

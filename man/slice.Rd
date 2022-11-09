@@ -7,6 +7,7 @@
 \usage{
 \method{slice}{datacube}(
   .data = NULL,
+  ...,
   .extent = NULL,
   .dimension = NULL,
   .geometries = NULL,
@@ -17,6 +18,8 @@
 \arguments{
 \item{.data}{datacube object from tidyopeneo. For
 array_filter : an array.}
+
+\item{...}{any parameter inherited from dplyr}
 
 \item{.extent}{For **filter_temporal**, the Left-closed temporal interval, i.e.
 an array with exactly two elements: The first element is the start of the

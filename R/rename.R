@@ -4,6 +4,7 @@
 #' @name rename
 #' @rdname rename
 #' @param .data datacube object from tidyopeneo.
+#' @param ... any parameter inherited from dplyr
 #' @param .source The current name of the dimension. Fails with a
 #' `DimensionNotAvailable` exception if the specified dimension does not exist.
 #' @param .target A new Name for the dimension. Fails with a `DimensionExists`
@@ -31,11 +32,20 @@
 #'    select(.bands = "NO2") %>%
 #'    rename(.source = "spatial", .target = "space")
 #' @export
-rename.datacube <- function(.data = NULL, .source, .target, ...
+rename.datacube <- function(.data = NULL, ..., .source, .target
 ) {
 
   #con = openeo::connect(host = "https://openeo.cloud")
   p = openeo::processes()
+
+  #check dots ...
+  dots = list(...)
+
+  for (i in dots){
+    if (length(dots) != 0){
+      inherits(dots)
+    }
+  }
 
   # rename_dimension
   dc = p$rename_dimension(data = .data, source = .source,

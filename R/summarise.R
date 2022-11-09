@@ -4,6 +4,7 @@
 #' @description Summarise datacube wraps the reduce_dimension(https://processes.openeo.org/#reduce_dimension),
 #'  function into a simulated dplyr's \code{\link[dplyr]{summarise}}.
 #' @param .data datacube object from tidyopeneo.
+#' @param ... any parameter inherited from dplyr
 #' @param .reducer A reducer to apply on the specified dimension.
 #' A reducer is a single process such as ``mean()`` or a set of processes, which
 #' computes a single value for a list of values, see the category 'reducer'
@@ -34,12 +35,21 @@
 #'    select(.bands = "NO2") %>%
 #'    summarise(.dimension = "t", .reducer = mean)
 #' @export
-summarise.datacube <- function(.data = NULL, .reducer = NULL,
-                              .dimension = NULL, .context = NULL, ...
+summarise.datacube <- function(.data = NULL, ..., .reducer = NULL,
+                              .dimension = NULL, .context = NULL
 ) {
 
   #con = openeo::connect(host = "https://openeo.cloud")
   p = openeo::processes()
+
+  #check dots ...
+  dots = list(...)
+
+  for (i in dots){
+    if (length(dots) != 0){
+      inherits(dots)
+    }
+  }
 
   # reduce_dimension
   dc = p$reduce_dimension(data = .data, reducer = .reducer,

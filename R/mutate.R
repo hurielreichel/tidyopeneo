@@ -7,6 +7,7 @@
 #' @name mutate
 #' @rdname mutate
 #' @param .data datacube object from tidyopeneo.
+#' @param ... any parameter inherited from dplyr
 #' @param .process for **apply** : A process that accepts and returns a single value
 #' and is applied on each individual value in the data cube. The process may
 #' consist of multiple sub-processes and could, for example, consist of processes
@@ -106,14 +107,23 @@
 #'
 #' #ToDO : apply_kernel, apply_dimension, apply_neighborhood
 #' @export
-mutate.datacube <- function(.data = NULL,
+mutate.datacube <- function(.data = NULL, ...,
                                 .process = NULL, .context = NULL,
                                 .kernel = NULL, .factor = 1, .border = 0,
                                 .replace_invalid = 0, .dimension = NULL, .target_dimension = NULL,
-                                .size = NULL, .overlap = NULL, ... ) {
+                                .size = NULL, .overlap = NULL) {
 
   #con = openeo::connect(host = "https://openeo.cloud")
   p = openeo::processes()
+
+  #check dots ...
+  dots = list(...)
+
+  for (i in dots){
+    if (length(dots) != 0){
+      inherits(dots)
+    }
+  }
 
   # apply
   if (all(!is.null(.data), !is.null(.process),

@@ -4,6 +4,7 @@
 #' openeo::processes()$load_collection() (https://processes.openeo.org/#load_collection).
 #' This is understood as the **starting point** when working with tidyopeneo. (optional)
 #' @param data ProcessNode datacube from openeo (optional)
+#' @param .con character link to openeo connection. Default to "https://openeo.cloud"
 #' @return datacube
 #' @import openeo
 #' @details either data or id must be called, and never both of them. Using id will call an
@@ -11,13 +12,14 @@
 #' Defining data is recommended to use once you need to apply a processes that is not included in
 #' tidyopeneo and you want to come back to use tidyopeneo functions.
 #' @export
-datacube=function(id, data = NULL){
+datacube=function(id, data = NULL, .con = NULL){
 
   if (is.null(id) & !is.null(data)){
     class(data) = c(class(dc), "datacube") # Class definition
     data
   }else{
-    con = openeo::connect(host = "https://openeo.cloud")
+    if (is.null(.con)){con = openeo::connect(host = "https://openeo.cloud")
+    }else{con = openeo::connect(host = .con)}
     p = openeo::processes()
     dc = p$load_collection(id)
     class(dc) = c(class(dc), "datacube") # Class definition

@@ -2,9 +2,15 @@
 % Please edit documentation in R/select.R
 \name{select}
 \alias{select}
+\alias{select.datacube}
 \title{Select Datacube}
+\usage{
+\method{select}{datacube}(.data = NULL, ..., .bands = NULL, .wavelength = NULL)
+}
 \arguments{
 \item{.data}{datacube object from tidyopeneo.}
+
+\item{...}{any parameter inherited from dplyr}
 
 \item{.bands}{character. A list of band names. Either
 the unique band name (metadata field name in bands) or one of the common band

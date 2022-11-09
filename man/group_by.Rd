@@ -7,6 +7,7 @@
 \usage{
 \method{group_by}{datacube}(
   .data = NULL,
+  ...,
   .period = NULL,
   .reducer = NULL,
   .dimension = NULL,
@@ -19,6 +20,8 @@
 }
 \arguments{
 \item{.data}{datacube object from tidyopeneo}
+
+\item{...}{any parameter inherited from dplyr}
 
 \item{.period}{For **aggregate_temporal_period** : The time intervals to aggregate.
 The following pre-defined values are available:* `hour`: Hour of the day* `day`:

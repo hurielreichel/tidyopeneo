@@ -5,13 +5,21 @@
 \alias{summarize.datacube}
 \title{Summarize Datacube}
 \usage{
-\method{summarize}{datacube}(.data = NULL, .reducer = NULL, .dimension = NULL, .context = NULL)
+\method{summarize}{datacube}(
+  .data = NULL,
+  ...,
+  .reducer = NULL,
+  .dimension = NULL,
+  .context = NULL
+)
 }
 \arguments{
 \item{.data}{datacube object from tidyopeneo.}
 
-\item{.reducer}{A reducer to apply on the specified dimension.
-A reducer is a single process such as ``mean()`` or a set of processes, which
+\item{...}{any parameter inherited from dplyr}
+
+\item{.reducer}{character or function. A reducer to apply on the specified dimension.
+A reducer is a single process such as "mean or a set of processes, which
 computes a single value for a list of values, see the category 'reducer'
 for such processes.}
 

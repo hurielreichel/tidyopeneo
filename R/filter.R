@@ -5,6 +5,7 @@
 #' @name filter
 #' @rdname filter
 #' @param .data datacube object from tidyopeneo.
+#' @param ... any parameter inherited from dplyr
 #' @param .condition logical. A condition that is evaluated
 #' against each dimension label in the specified dimension. A dimension label and
 #' the corresponding data is preserved for the given dimension, if the condition
@@ -20,11 +21,20 @@
 #' @examples
 #' # TODO
 #' @export
-filter.datacube <- function(.data = NULL,
-                            .condition = NULL, .dimension = NULL, .context = NULL, ...) {
+filter.datacube <- function(.data = NULL, ...,
+                            .condition = NULL, .dimension = NULL, .context = NULL) {
 
   #con = openeo::connect(host = "https://openeo.cloud")
   p = openeo::processes()
+
+  #check dots ...
+  dots = list(...)
+
+  for (i in dots){
+    if (length(dots) != 0){
+      inherits(dots)
+    }
+  }
 
   if (is.null(.data)) {
     cli::cli_alert_danger(

@@ -7,6 +7,7 @@
 \usage{
 \method{mutate}{datacube}(
   .data = NULL,
+  ...,
   .process = NULL,
   .context = NULL,
   .kernel = NULL,
@@ -21,6 +22,8 @@
 }
 \arguments{
 \item{.data}{datacube object from tidyopeneo.}
+
+\item{...}{any parameter inherited from dplyr}
 
 \item{.process}{for **apply** : A process that accepts and returns a single value
 and is applied on each individual value in the data cube. The process may
