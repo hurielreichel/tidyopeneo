@@ -26,6 +26,8 @@
 #' each value, index and/or label in the array. Only the array elements for
 #' which the condition returns `true` are preserved.
 #' @param .context For **array_filter** (optional): Additional data to be passed to the condition.
+#' @param .con openeo connection
+#' @param .p processes available at .com
 #' @return datacube
 #' @import dplyr openeo cli sf
 #' @importFrom dplyr slice
@@ -62,10 +64,8 @@
 slice.datacube <- function(.data = NULL, ...,
                            .extent = NULL, .dimension = NULL,
                            .geometries = NULL,
-                           .condition = NULL, .context = NULL) {
-
-  #con = openeo::connect(host = "https://openeo.cloud")
-  p = openeo::processes()
+                           .condition = NULL, .context = NULL,
+						   .p = openeo::processes(.con), .con = openeo::connect()) {
 
   #check dots ...
   dots = list(...)
@@ -79,37 +79,33 @@ slice.datacube <- function(.data = NULL, ...,
   #filter_temporal
   if (length(.extent) == 2 & is.null(.geometries) & is.null(.condition)&
       is.null(.context)){
-    dc = p$filter_temporal(data = .data, extent = .extent, dimension = .dimension)
+    dc = .p$filter_temporal(data = .data, extent = .extent, dimension = .dimension)
     cli::cli_alert_success("filter_temporal applied")
 
   #filter_bbox
   } else if (length(.extent == 4) & is.null(.geometries) & is.null(.condition)&
              is.null(.context)) {
-    dc = p$filter_bbox(data = .data, extent = .extent)
+    dc = .p$filter_bbox(data = .data, extent = .extent)
     cli::cli_alert_success("filter_bbox applied")
 
   } else if (length(.extent != 2) | length(.extent != 4)){
-    cli::cli_alert_danger(paste0("if willing to perform a filter_temporal, extent must be length 2,", "\n",
-    "else if willing to perform a filter_bbox length extension must be 4.",  "\n",
-    "You object has length ", length(.extent)))
+    cli::cli_alert_danger(paste0("for performing a filter_temporal, extent must have length 2,", "\n",
+    "else for performing a filter_bbox .extent must have length 4.",  "\n",
+    "Your object has length ", length(.extent)))
   }
 
   #filter_spatial
   if (!is.null(.geometries) & is.null(.extent) & is.null(.condition) &
       is.null(.context) & is.null(.dimension)) {
-    dc = p$filter_spatial(data = .data, geometries = .geometries)
+    dc = .p$filter_spatial(data = .data, geometries = .geometries)
     cli::cli_alert_success("filter_spatial applied")
   }
 
   #array_filter
   if (all(is.null(.geometries), is.null(.extent), !is.null(.condition),
       is.null(.dimension))) {
-    dc = p$array_filter(data = .data, condition = .condition, context = .context)
+    dc = .p$array_filter(data = .data, condition = .condition, context = .context)
     cli::cli_alert_success("array_filter applied")
-
   }
-  class(dc) = c(class(dc), "datacube")
-
-  dc
-
+  structure(dc, class = c("datacube", class(dc)))
 }
