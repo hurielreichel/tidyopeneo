@@ -12,7 +12,9 @@
   .dimension = NULL,
   .geometries = NULL,
   .condition = NULL,
-  .context = NULL
+  .context = NULL,
+  .p = openeo::processes(.con),
+  .con = openeo::connect()
 )
 }
 \arguments{
@@ -45,6 +47,10 @@ each value, index and/or label in the array. Only the array elements for
 which the condition returns `true` are preserved.}
 
 \item{.context}{For **array_filter** (optional): Additional data to be passed to the condition.}
+
+\item{.p}{processes available at .com}
+
+\item{.con}{openeo connection}
 }
 \value{
 datacube
