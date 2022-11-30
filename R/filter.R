@@ -14,6 +14,8 @@
 #'  to filter on. Fails with a DimensionNotAvailable exception if the specified
 #'  dimension does not exist.
 #' @param .context (optional) : any Additional data to be passed to the condition.
+#' @param .con openeo connection
+#' @param .p processes available at .con
 #' @return datacube
 #' @import dplyr openeo cli
 #' @seealso [openeo::list_processes()]
@@ -22,10 +24,8 @@
 #' # TODO
 #' @export
 filter.datacube <- function(.data = NULL, ...,
-                            .condition = NULL, .dimension = NULL, .context = NULL) {
-
-  #con = openeo::connect(host = "https://openeo.cloud")
-  p = openeo::processes()
+                            .condition = NULL, .dimension = NULL, .context = NULL,
+                            .p = openeo::processes(.con), .con = openeo::connect("openeo.cloud")) {
 
   #check dots ...
   dots = list(...)
@@ -50,13 +50,11 @@ filter.datacube <- function(.data = NULL, ...,
     if (inherits(.condition, "logical", "TRUE") == 0){
       cli::cli_alert_danger("dimension arg must be logical")}
 
-    dc = p$filter_labels(.data, condition = .condition,
+    dc = .p$filter_labels(.data, condition = .condition,
                                dimension = .dimension, context = .context)
     cli::cli_alert_success("filter_labels applied")
   }
 
-  class(dc) = c(class(dc), "datacube")
-
-  dc
+  structure(dc, class = c("datacube", class(dc)))
 
 }

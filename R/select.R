@@ -18,6 +18,8 @@
 #' specified in micrometers. The order of the specified array defines the
 #' order of the bands in the data cube. If multiple bands match the wavelengths,
 #' all matched bands are included in the original order.
+#' @param .con openeo connection
+#' @param .p processes available at .con
 #' @return datacube
 #' @import dplyr openeo cli
 #' @seealso [openeo::list_processes()]
@@ -29,10 +31,9 @@
 #' dc_no2 <- dc %>% select(.bands = "NO2")
 #' @export
 select.datacube <- function(.data = NULL, ...,
-                            .bands = NULL, .wavelength = NULL) {
+                            .bands = NULL, .wavelength = NULL,
+                            .p = openeo::processes(.con), .con = openeo::connect("openeo.cloud")) {
 
-  #con = openeo::connect(host = "https://openeo.cloud")
-  p = openeo::processes()
 
   #check dots ...
   dots = list(...)
@@ -55,15 +56,13 @@ select.datacube <- function(.data = NULL, ...,
         inherits(.wavelength, "character", TRUE) == 0){
       cli::format_error("bands or wavelenght args must be character")}
 
-    dc = p$filter_bands(.data, bands = .bands,
+    dc = .p$filter_bands(.data, bands = .bands,
                         wavelengths = .wavelength)
     cli::cli_alert_success("filter_bands applied")
 
   }
 
-  class(dc) = c(class(dc), "datacube")
-
-  dc
+  structure(dc, class = c("datacube", class(dc)))
 
 }
 

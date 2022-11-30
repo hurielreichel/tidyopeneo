@@ -5,7 +5,14 @@
 \alias{select.datacube}
 \title{Select Datacube}
 \usage{
-\method{select}{datacube}(.data = NULL, ..., .bands = NULL, .wavelength = NULL)
+\method{select}{datacube}(
+  .data = NULL,
+  ...,
+  .bands = NULL,
+  .wavelength = NULL,
+  .p = openeo::processes(.con),
+  .con = openeo::connect("openeo.cloud")
+)
 }
 \arguments{
 \item{.data}{datacube object from tidyopeneo.}
@@ -26,6 +33,10 @@ wavelength and the second element is the maximum wavelength. Wavelengths are
 specified in micrometers. The order of the specified array defines the
 order of the bands in the data cube. If multiple bands match the wavelengths,
 all matched bands are included in the original order.}
+
+\item{.p}{processes available at .con}
+
+\item{.con}{openeo connection}
 }
 \value{
 datacube

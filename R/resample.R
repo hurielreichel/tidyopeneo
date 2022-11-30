@@ -53,6 +53,8 @@
 #' to no-data (`null`).
 #' @param .target_process either "spatial" to apply **resample_cube_spatial** or
 #' "temporal" to apply **resample_cube_temporal**.
+#' @param .con openeo connection
+#' @param .p processes available at .con
 #' @return datacube
 #' @details if arg .target is not defined, resample_spatial is gonna be run.
 #' Else, if "spatial" is set as .target_process, resample_cube_spatial is gonna
@@ -90,14 +92,12 @@ resample <- function(.data = NULL, .resolution = 0, .projection = NULL,
 resample.datacube <- function(.data = NULL, .resolution = 0, .projection = NULL,
                               .method = "near", .align = "upper-left",
                               .target = NULL, .dimension = NULL,
-                              .valid_within = NULL, .target_process = NULL) {
-
-  #con = openeo::connect(host = "https://openeo.cloud")
-  p = openeo::processes()
+                              .valid_within = NULL, .target_process = NULL,
+                              .p = openeo::processes(.con), .con = openeo::connect("openeo.cloud")) {
 
   # resample_spatial
   if (all(!is.null(.data), is.null(.target))) {
-    dc = p$resample_spatial(data = .data,
+    dc = .p$resample_spatial(data = .data,
                             resolution = .resolution, projection = .projection,
                             method = .method, align = .align)
     cli::cli_alert_success("resample_spatial applied")
@@ -109,13 +109,13 @@ resample.datacube <- function(.data = NULL, .resolution = 0, .projection = NULL,
     # resample_cube_spatial
     if (.target_process == "spatial"){ # cube process
 
-      dc = p$resample_cube_spatial(data = .data, target = .target, method = .method)
+      dc = .p$resample_cube_spatial(data = .data, target = .target, method = .method)
       cli::cli_alert_success("resample_cube_spatial applied")
 
     # resample_cube_temporal
     } else if (.target_process == "spatial") {
 
-      dc = p$resample_cube_temporal(data = .data, target = .target,
+      dc = .p$resample_cube_temporal(data = .data, target = .target,
                                     dimension = .dimension,
                                     valid_within = .valid_within)
       cli::cli_alert_success("resample_cube_temporal applied")
@@ -129,8 +129,6 @@ resample.datacube <- function(.data = NULL, .resolution = 0, .projection = NULL,
 
     }}
 
-  class(dc) = c(class(dc), "datacube")
-
-  dc
+  structure(dc, class = c("datacube", class(dc)))
 
 }

@@ -57,6 +57,8 @@
 #' after, so an overlap of 8 pixels will add 8 pixels on both sides of the window,
 #' so 16 in total.Be aware that large overlaps increase the need for computational
 #' resources and modifying overlapping data in subsequent operations have no effect.
+#' @param .con openeo connection
+#' @param .p processes available at .con
 #' @return datacube
 #' @import dplyr openeo cli
 #' @details For **apply** define .data, .process, and optionally .context.
@@ -111,10 +113,8 @@ mutate.datacube <- function(.data = NULL, ...,
                                 .process = NULL, .context = NULL,
                                 .kernel = NULL, .factor = 1, .border = 0,
                                 .replace_invalid = 0, .dimension = NULL, .target_dimension = NULL,
-                                .size = NULL, .overlap = NULL) {
-
-  #con = openeo::connect(host = "https://openeo.cloud")
-  p = openeo::processes()
+                                .size = NULL, .overlap = NULL,
+                                .p = openeo::processes(.con), .con = openeo::connect("openeo.cloud")) {
 
   #check dots ...
   dots = list(...)
@@ -130,7 +130,7 @@ mutate.datacube <- function(.data = NULL, ...,
           is.null(.kernel), is.null(.dimension), is.null(.target_dimension),
           is.null(.size), is.null(.overlap), is.null(.context))){
 
-    dc = p$apply(data = .data, process = .process, context = .context)
+    dc = .p$apply(data = .data, process = .process, context = .context)
     cli::cli_alert_success("apply process applied")
 
   }
@@ -141,7 +141,7 @@ mutate.datacube <- function(.data = NULL, ...,
           is.null(.dimension), is.null(.target_dimension),
           is.null(.size), is.null(.overlap))){
 
-    dc = p$apply_kernel(data = .data, kernel = .kernel,
+    dc = .p$apply_kernel(data = .data, kernel = .kernel,
                         factor = .factor, border = .border, replace_invalid = .replace_invalid)
     cli::cli_alert_success("apply_kernel applied")
 
@@ -151,7 +151,7 @@ mutate.datacube <- function(.data = NULL, ...,
   if (all(!is.null(.data), !is.null(.dimension), !is.null(.process),
           is.null(.kernel), is.null(.size), is.null(.overlap))){
 
-    dc = p$apply_dimension(data = .data, process = .process, dimension = .dimension,
+    dc = .p$apply_dimension(data = .data, process = .process, dimension = .dimension,
                            target_dimension = .target_dimension, context = .context)
     cli::cli_alert_success("apply_dimension applied")
   }
@@ -160,14 +160,12 @@ mutate.datacube <- function(.data = NULL, ...,
   if (all(!is.null(.data), !is.null(.process), !is.null(.size),
           is.null(.dimension), is.null(.target_dimension))){
 
-    dc = p$apply_neighborhood(data = .data, process = .process, size = .size,
+    dc = .p$apply_neighborhood(data = .data, process = .process, size = .size,
                               overlap = .overlap, context = .context)
     cli::cli_alert_success("apply_neighborhood applied")
 
   }
 
-  class(dc) = c(class(dc), "datacube")
-
-  dc
+  structure(dc, class = c("datacube", class(dc)))
 
 }

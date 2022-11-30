@@ -9,6 +9,8 @@
 #' `DimensionNotAvailable` exception if the specified dimension does not exist.
 #' @param .target A new Name for the dimension. Fails with a `DimensionExists`
 #' exception if a dimension with the specified name exists.
+#' @param .con openeo connection
+#' @param .p processes available at .con
 #' @return datacube
 #' @import dplyr openeo cli
 #' @seealso [openeo::list_processes()]
@@ -32,11 +34,8 @@
 #'    select(.bands = "NO2") %>%
 #'    rename(.source = "spatial", .target = "space")
 #' @export
-rename.datacube <- function(.data = NULL, ..., .source, .target
-) {
-
-  #con = openeo::connect(host = "https://openeo.cloud")
-  p = openeo::processes()
+rename.datacube <- function(.data = NULL, ..., .source, .target,
+                            .p = openeo::processes(.con), .con = openeo::connect("openeo.cloud")) {
 
   #check dots ...
   dots = list(...)
@@ -48,12 +47,10 @@ rename.datacube <- function(.data = NULL, ..., .source, .target
   }
 
   # rename_dimension
-  dc = p$rename_dimension(data = .data, source = .source,
+  dc = .p$rename_dimension(data = .data, source = .source,
                           target = .target)
   cli::cli_alert_success("rename_dimension applied")
 
-  class(dc) = c(class(dc), "datacube")
-
-  dc
+  structure(dc, class = c("datacube", class(dc)))
 
 }

@@ -5,7 +5,14 @@
 \alias{rename.datacube}
 \title{Rename Datacube Dimension}
 \usage{
-\method{rename}{datacube}(.data = NULL, ..., .source, .target)
+\method{rename}{datacube}(
+  .data = NULL,
+  ...,
+  .source,
+  .target,
+  .p = openeo::processes(.con),
+  .con = openeo::connect("openeo.cloud")
+)
 }
 \arguments{
 \item{.data}{datacube object from tidyopeneo.}
@@ -17,6 +24,10 @@
 
 \item{.target}{A new Name for the dimension. Fails with a `DimensionExists`
 exception if a dimension with the specified name exists.}
+
+\item{.p}{processes available at .con}
+
+\item{.con}{openeo connection}
 }
 \value{
 datacube

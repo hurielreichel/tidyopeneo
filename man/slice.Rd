@@ -14,7 +14,7 @@
   .condition = NULL,
   .context = NULL,
   .p = openeo::processes(.con),
-  .con = openeo::connect()
+  .con = openeo::connect("openeo.cloud")
 )
 }
 \arguments{
@@ -48,7 +48,7 @@ which the condition returns `true` are preserved.}
 
 \item{.context}{For **array_filter** (optional): Additional data to be passed to the condition.}
 
-\item{.p}{processes available at .com}
+\item{.p}{processes available at .con}
 
 \item{.con}{openeo connection}
 }

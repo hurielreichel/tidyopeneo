@@ -27,7 +27,7 @@
 #' which the condition returns `true` are preserved.
 #' @param .context For **array_filter** (optional): Additional data to be passed to the condition.
 #' @param .con openeo connection
-#' @param .p processes available at .com
+#' @param .p processes available at .con
 #' @return datacube
 #' @import dplyr openeo cli sf
 #' @importFrom dplyr slice
@@ -65,7 +65,7 @@ slice.datacube <- function(.data = NULL, ...,
                            .extent = NULL, .dimension = NULL,
                            .geometries = NULL,
                            .condition = NULL, .context = NULL,
-						   .p = openeo::processes(.con), .con = openeo::connect()) {
+                           .p = openeo::processes(.con), .con = openeo::connect("openeo.cloud")) {
 
   #check dots ...
   dots = list(...)

@@ -15,7 +15,9 @@
   .geometries = NULL,
   .target_dimension = "result",
   .intervals = NULL,
-  .labels = array()
+  .labels = array(),
+  .p = openeo::processes(.con),
+  .con = openeo::connect("openeo.cloud")
 )
 }
 \arguments{
@@ -93,6 +95,10 @@ to make it possible that left-closed time intervals can fully cover the day.}
 and/or times. Is only required to be specified if the values for the start of
 the temporal intervals are not distinct and thus the default labels would not
 be unique. The number of labels and the number of groups need to be equal.}
+
+\item{.p}{processes available at .con}
+
+\item{.con}{openeo connection}
 }
 \value{
 datacube

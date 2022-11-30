@@ -71,6 +71,8 @@
 #' and/or times. Is only required to be specified if the values for the start of
 #' the temporal intervals are not distinct and thus the default labels would not
 #' be unique. The number of labels and the number of groups need to be equal.
+#' @param .con openeo connection
+#' @param .p processes available at .con
 #' @return datacube
 #' @import dplyr openeo cli sf
 #' @details If .period is defined, aggregate_temporal_period is run. Else if
@@ -127,11 +129,8 @@
 group_by.datacube <- function(.data = NULL, ..., .period = NULL, .reducer = NULL,
                               .dimension = NULL, .context = NULL,
                               .geometries = NULL, .target_dimension = "result",
-                              .intervals = NULL, .labels = array()
-                              ) {
-
-  #con = openeo::connect(host = "https://openeo.cloud")
-  p = openeo::processes()
+                              .intervals = NULL, .labels = array(),
+                              .p = openeo::processes(.con), .con = openeo::connect("openeo.cloud")) {
 
   #check dots ...
   dots = list(...)
@@ -147,7 +146,7 @@ group_by.datacube <- function(.data = NULL, ..., .period = NULL, .reducer = NULL
 
     if(inherits(.reducer, "character")){
       reducing_process = .reducer
-      .reducer = function(data, context) {p[[reducing_process]](data)}
+      .reducer = function(data, context) {.p[[reducing_process]](data)}
     }
 
   }else{
@@ -156,7 +155,7 @@ group_by.datacube <- function(.data = NULL, ..., .period = NULL, .reducer = NULL
 
   # aggregate_temporal_period
   if (all(!is.null(.data), !is.null(.period), is.null(.geometries), is.null(.intervals))) {
-    dc = p$aggregate_temporal_period(data = .data, period = .period, reducer = .reducer,
+    dc = .p$aggregate_temporal_period(data = .data, period = .period, reducer = .reducer,
                                      dimension = .dimension, context = .context)
     cli::cli_alert_success("aggregate_temporal_period applied")
   }
@@ -164,7 +163,7 @@ group_by.datacube <- function(.data = NULL, ..., .period = NULL, .reducer = NULL
   # aggregate_spatial
   if (all(!is.null(.data), !is.null(.geometries), is.null(.period), is.null(.intervals))) {
 
-    dc = p$aggregate_spatial(data = .data, geometries = .geometries,
+    dc = .p$aggregate_spatial(data = .data, geometries = .geometries,
                              reducer = .reducer, target_dimension = .target_dimension,
                              context = .context)
     cli::cli_alert_success("aggregate_spatial applied")
@@ -172,14 +171,12 @@ group_by.datacube <- function(.data = NULL, ..., .period = NULL, .reducer = NULL
 
   # aggregate_temporal
   if (all(!is.null(.data), is.null(.geometries), is.null(.period), !is.null(.intervals))) {
-    dc = p$aggregate_temporal(data = .data, intervals = .intervals,
+    dc = .p$aggregate_temporal(data = .data, intervals = .intervals,
                              reducer = .reducer, dimension = .dimension,
                              context = .context)
     cli::cli_alert_success("aggregate_temporal applied")
   }
 
-  class(dc) = c(class(dc), "datacube")
-
-  dc
+  structure(dc, class = c("datacube", class(dc)))
 
 }

@@ -12,6 +12,8 @@
 #' @param .dimension The name of the dimension over which to reduce. Fails with
 #' a `DimensionNotAvailable` exception if the specified dimension does not exist.
 #' @param .context Additional data to be passed to the reducer (optional).
+#' @param .con openeo connection
+#' @param .p processes available at .con
 #' @return datacube
 #' @import dplyr openeo cli
 #' @importFrom dplyr summarize
@@ -36,11 +38,8 @@
 #'    summarize(.dimension = "t", .reducer = mean)
 #' @export
 summarize.datacube <- function(.data = NULL, ..., .reducer = NULL,
-                               .dimension = NULL, .context = NULL
-) {
-
-  #con = openeo::connect(host = "https://openeo.cloud")
-  p = openeo::processes()
+                               .dimension = NULL, .context = NULL,
+                               .p = openeo::processes(.con), .con = openeo::connect("openeo.cloud")) {
 
   #check dots ...
   dots = list(...)
@@ -52,12 +51,10 @@ summarize.datacube <- function(.data = NULL, ..., .reducer = NULL,
   }
 
   # reduce_dimension
-  dc = p$reduce_dimension(data = .data, reducer = .reducer,
+  dc = .p$reduce_dimension(data = .data, reducer = .reducer,
                           dimension = .dimension, context = .context)
   cli::cli_alert_success("reduce_dimension applied")
 
-  class(dc) = c(class(dc), "datacube")
-
-  dc
+  structure(dc, class = c("datacube", class(dc)))
 
 }

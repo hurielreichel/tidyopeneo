@@ -10,7 +10,9 @@
   ...,
   .reducer = NULL,
   .dimension = NULL,
-  .context = NULL
+  .context = NULL,
+  .p = openeo::processes(.con),
+  .con = openeo::connect("openeo.cloud")
 )
 }
 \arguments{
@@ -27,6 +29,10 @@ for such processes.}
 a `DimensionNotAvailable` exception if the specified dimension does not exist.}
 
 \item{.context}{Additional data to be passed to the reducer (optional).}
+
+\item{.p}{processes available at .con}
+
+\item{.con}{openeo connection}
 }
 \value{
 datacube

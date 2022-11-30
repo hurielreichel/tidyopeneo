@@ -17,7 +17,9 @@
   .dimension = NULL,
   .target_dimension = NULL,
   .size = NULL,
-  .overlap = NULL
+  .overlap = NULL,
+  .p = openeo::processes(.con),
+  .con = openeo::connect("openeo.cloud")
 )
 }
 \arguments{
@@ -83,6 +85,10 @@ this is often a number of pixels. The overlap specified is added before and
 after, so an overlap of 8 pixels will add 8 pixels on both sides of the window,
 so 16 in total.Be aware that large overlaps increase the need for computational
 resources and modifying overlapping data in subsequent operations have no effect.}
+
+\item{.p}{processes available at .con}
+
+\item{.con}{openeo connection}
 }
 \value{
 datacube

@@ -10,7 +10,9 @@
   ...,
   .condition = NULL,
   .dimension = NULL,
-  .context = NULL
+  .context = NULL,
+  .p = openeo::processes(.con),
+  .con = openeo::connect("openeo.cloud")
 )
 }
 \arguments{
@@ -28,6 +30,10 @@ to filter on. Fails with a DimensionNotAvailable exception if the specified
 dimension does not exist.}
 
 \item{.context}{(optional) : any Additional data to be passed to the condition.}
+
+\item{.p}{processes available at .con}
+
+\item{.con}{openeo connection}
 }
 \value{
 datacube

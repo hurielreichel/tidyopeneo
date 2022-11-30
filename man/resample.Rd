@@ -26,7 +26,9 @@ resample(
   .target = NULL,
   .dimension = NULL,
   .valid_within = NULL,
-  .target_process = NULL
+  .target_process = NULL,
+  .p = openeo::processes(.con),
+  .con = openeo::connect("openeo.cloud")
 )
 }
 \arguments{
@@ -88,6 +90,10 @@ to no-data (`null`).}
 
 \item{.target_process}{either "spatial" to apply **resample_cube_spatial** or
 "temporal" to apply **resample_cube_temporal**.}
+
+\item{.p}{processes available at .con}
+
+\item{.con}{openeo connection}
 }
 \value{
 datacube
