@@ -29,8 +29,8 @@
 #' date2 = "2018-10-31"
 #'
 #' dc = datacube("SENTINEL_5P_L2") %>%
-#'    slice(.extent = list(west = w, south = s, east = e, north = n)) %>%
-#'    slice(.extent = c(date1, date2)) %>%
+#'    filter(.extent = list(west = w, south = s, east = e, north = n)) %>%
+#'    filter(.extent = c(date1, date2)) %>%
 #'    select(.bands = "NO2") %>%
 #'    rename(.source = "spatial", .target = "space")
 #' @export

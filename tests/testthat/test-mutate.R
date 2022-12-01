@@ -3,13 +3,13 @@ test_that("mutate() writes a 'datacube' object", {
   dc = datacube(id = "SENTINEL_5P_L2")
 
   dc_no2 = dc %>%
-      slice(.extent = list(west = 6.09, south = 46.15, east = 6.99, north = 46.5)) %>%
-      slice(.extent = c("2020-01-01", "2020-04-31")) %>%
+      filter(.extent = list(west = 6.09, south = 46.15, east = 6.99, north = 46.5)) %>%
+      filter(.extent = c("2020-01-01", "2020-04-31")) %>%
       select(.bands = "NO2")
 
   dc_cloud = dc %>%
-      slice(.extent = list(west = 6.09, south = 46.15, east = 6.99, north = 46.5)) %>%
-      slice(.extent = c("2020-01-01", "2020-04-31")) %>%
+      filter(.extent = list(west = 6.09, south = 46.15, east = 6.99, north = 46.5)) %>%
+      filter(.extent = c("2020-01-01", "2020-04-31")) %>%
       select(.bands = "CLOUD_FRACTION")
 
   p = openeo::processes()

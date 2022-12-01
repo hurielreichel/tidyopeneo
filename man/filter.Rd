@@ -11,6 +11,8 @@
   .condition = NULL,
   .dimension = NULL,
   .context = NULL,
+  .extent = NULL,
+  .geometries = NULL,
   .p = openeo::processes(.con),
   .con = openeo::connect("openeo.cloud")
 )
@@ -20,16 +22,31 @@
 
 \item{...}{any parameter inherited from dplyr}
 
-\item{.condition}{logical. A condition that is evaluated
-against each dimension label in the specified dimension. A dimension label and
-the corresponding data is preserved for the given dimension, if the condition
-returns true.}
+\item{.condition}{For **array_filter** : A condition that is evaluated against
+each value, index and/or label in the array. Only the array elements for
+which the condition returns `true` are preserved.}
 
-\item{.dimension}{(optional) : character The name of the dimension
-to filter on. Fails with a DimensionNotAvailable exception if the specified
-dimension does not exist.}
+\item{.dimension}{For **filter_temporal** : The name of the temporal dimension
+to filter on. If no specific dimension is specified or it is set to `null`,
+the filter applies to all temporal dimensions. Fails with a `DimensionNotAvailable`
+exception if the specified dimension does not exist.}
 
-\item{.context}{(optional) : any Additional data to be passed to the condition.}
+\item{.context}{(optional) : any Additional data to be passed to the condition.
+Mandatory for filter_labels or array_filter processes.}
+
+\item{.extent}{For **filter_temporal**, the Left-closed temporal interval, i.e.
+an array with exactly two elements: The first element is the start of the
+temporal interval. The specified instance in time is **included** in the
+interval. The second element is the end of the temporal interval. The
+specified instance in time is **excluded** from the interval. The specified
+temporal strings follow [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339.html).
+Also supports open intervals by setting one of the boundaries to `null`, but
+never both.
+For **filter_bbox**, the bounding box, which may include a vertical axis
+(see `base` and `height`).}
+
+\item{.geometries}{For **filter_spatial** : one or more geometries used for
+filtering, specified as GeoJSON.}
 
 \item{.p}{processes available at .con}
 
@@ -39,11 +56,35 @@ dimension does not exist.}
 datacube
 }
 \description{
-Filter datacube wraps the filter_labels function
-into a simulated dplyr's \code{\link[dplyr]{filter}}.
+Filter datacube wraps the filter_labels, filter_temporal, filter_bbox,
+filter_spatial and array_filter functions into a simulated dplyr's \code{\link[dplyr]{filter}}.
 }
 \examples{
-# TODO
+library(tidyopeneo)
+library(sf)
+
+dc = datacube(id = "SENTINEL_5P_L2")
+
+# filter_temporal and filter_bbox
+dc = dc \%>\%
+    filter(.extent = c("2021-01-01", "2021-03-03")) \%>\%
+    filter(.extent = c(west = 6.09, east = 6.99, south = 46.15, north = 46.57))
+
+# filter_spatial
+lon = c(6.22, 6.24)
+lat = c(46.20, 46.25)
+pol_coords = dplyr::tibble(lon, lat)
+pol <- pol_coords \%>\%
+    st_as_sf(coords = c("lon", "lat"), crs = 3857) \%>\%
+    st_bbox() \%>\%
+    st_as_sfc()
+
+dc = dc \%>\% filter(.geometries = pol)
+
+# array_filter
+# ToDO...
+# filter_labels
+# ToDO
 }
 \seealso{
 [openeo::list_processes()]
