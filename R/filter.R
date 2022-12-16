@@ -6,11 +6,11 @@
 #' @rdname filter
 #' @param .data datacube object from tidyopeneo.
 #' @param ... any parameter inherited from dplyr
-#' @param .condition logical. A condition that is evaluated
+#' @param .condition (optional) logical. For **array_filter** : A condition that is evaluated
 #' against each dimension label in the specified dimension. A dimension label and
 #' the corresponding data is preserved for the given dimension, if the condition
 #' returns true.
-#' @param .extent For **filter_temporal**, the Left-closed temporal interval, i.e.
+#' @param .extent (optional) For **filter_temporal**, the Left-closed temporal interval, i.e.
 #' an array with exactly two elements: The first element is the start of the
 #' temporal interval. The specified instance in time is **included** in the
 #' interval. The second element is the end of the temporal interval. The
@@ -20,19 +20,16 @@
 #' never both.
 #' For **filter_bbox**, the bounding box, which may include a vertical axis
 #' (see `base` and `height`).
-#' @param .dimension For **filter_temporal** : The name of the temporal dimension
+#' @param .dimension (optional) For **filter_temporal** : The name of the temporal dimension
 #' to filter on. If no specific dimension is specified or it is set to `null`,
 #' the filter applies to all temporal dimensions. Fails with a `DimensionNotAvailable`
 #' exception if the specified dimension does not exist.
-#' @param .geometries For **filter_spatial** : one or more geometries used for
+#' @param .geometries (optional) For **filter_spatial** : one or more geometries used for
 #' filtering, specified as GeoJSON.
-#' @param .condition For **array_filter** : A condition that is evaluated against
-#' each value, index and/or label in the array. Only the array elements for
-#' which the condition returns `true` are preserved.
 #' @param .context (optional) : any Additional data to be passed to the condition.
 #' Mandatory for filter_labels or array_filter processes.
-#' @param .con openeo connection
-#' @param .p processes available at .con
+#' @param .con (optional) openeo connection
+#' @param .p (optional) processes available at .con
 #' @return datacube
 #' @import dplyr openeo cli
 #' @seealso [openeo::list_processes()]
@@ -80,10 +77,10 @@ filter.datacube <- function(.data = NULL, ...,
 
   # check mandatory argument
   if (is.null(.data)) {
-    cli::cli_alert_danger(
+    stop(cli::format_error(
       "a datacube of class 'ProcessNode' and 'datacube' from
-      tidyopeneo must be passed"
-    )}
+      tidyopeneo MUST be passed"
+    ))}
 
   #filter_temporal
   if (length(.extent) == 2 & is.null(.geometries) & is.null(.condition)&

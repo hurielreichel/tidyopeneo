@@ -44,11 +44,12 @@ select.datacube <- function(.data = NULL, ...,
     }
   }
 
+  # check mandatory argument
   if (is.null(.data)) {
-    cli::cli_alert_danger(
+    stop(cli::format_error(
       "a datacube of class 'ProcessNode' and 'datacube' from
-      tidyopeneo must be passed"
-    )}
+      tidyopeneo MUST be passed"
+    ))}
 
   if (!is.null(length(.bands)) | !is.null(.wavelength)) {
 

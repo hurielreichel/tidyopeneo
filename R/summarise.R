@@ -11,9 +11,9 @@
 #' for such processes.
 #' @param .dimension The name of the dimension over which to reduce. Fails with
 #' a `DimensionNotAvailable` exception if the specified dimension does not exist.
-#' @param .context Additional data to be passed to the reducer (optional).
-#' @param .con openeo connection
-#' @param .p processes available at .con
+#' @param .context (optional) Additional data to be passed to the reducer (optional).
+#' @param .con (optional) openeo connection
+#' @param .p (optional) processes available at .con
 #' @return datacube
 #' @import dplyr openeo cli
 #' @importFrom dplyr summarise
@@ -49,6 +49,13 @@ summarise.datacube <- function(.data = NULL, ..., .reducer = NULL,
       inherits(dots)
     }
   }
+
+  # check mandatory argument
+  if (is.null(.data)) {
+    stop(cli::format_error(
+      "a datacube of class 'ProcessNode' and 'datacube' from
+      tidyopeneo MUST be passed"
+    ))}
 
   # reduce_dimension
   dc = .p$reduce_dimension(data = .data, reducer = .reducer,

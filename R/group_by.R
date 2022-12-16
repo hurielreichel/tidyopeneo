@@ -8,7 +8,7 @@
 #' @rdname group_by
 #' @param .data datacube object from tidyopeneo
 #' @param ... any parameter inherited from dplyr
-#' @param .period For **aggregate_temporal_period** : The time intervals to aggregate.
+#' @param .period (optional) For **aggregate_temporal_period** : The time intervals to aggregate.
 #' The following pre-defined values are available:* `hour`: Hour of the day* `day`:
 #' Day of the year* `week`: Week of the year* `dekad`: Ten day periods,
 #' counted per year with three periods per month (day 1 - 10, 11 - 20 and 21 -
@@ -29,7 +29,7 @@
 #' such processes. Periods may not contain any values, which for most reducers
 #' leads to no-data (`null`) values by default. It may also be a character referring to one
 #' of openeo reducing functions, such as, mean, sum, min, max, etc.
-#' @param .dimension For **aggregate_temporal_period** and **aggregate_temporal** (optional) :
+#' @param .dimension (optional). For **aggregate_temporal_period** and **aggregate_temporal** (optional) :
 #' The name of the temporal dimension for aggregation. All
 #' data along the dimension is passed through the specified reducer. If the
 #' dimension is not set or set to `null`, the data cube is expected to only
@@ -37,7 +37,7 @@
 #' it has more dimensions. Fails with a `DimensionNotAvailable` exception if the
 #' specified dimension does not exist.
 #' @param .context (optional) Additional data to be passed to the reducer.
-#' @param .geometries For **aggregate_spatial** : Geometries as GeoJSON on which
+#' @param .geometries (optional). For **aggregate_spatial** : Geometries as GeoJSON on which
 #' the aggregation will be based.
 #' One value will be computed per GeoJSON `Feature`, `Geometry` or
 #' `GeometryCollection`. For a `FeatureCollection` multiple values will be computed,
@@ -54,9 +54,9 @@
 #' Furthermore, a `GeometryCollection` composed of a single type of geometries
 #' should be avoided in favour of the corresponding multi-part type
 #' (e.g. `MultiPolygon`).
-#' @param .target_dimension For **aggregate-spatial** (optional) : The new dimension name
+#' @param .target_dimension (optional). For **aggregate-spatial** (optional) : The new dimension name
 #' to be used for storing the results. Defaults to `result`.
-#' @param .intervals For **aggregate_temporal** : Left-closed temporal intervals,
+#' @param .intervals (optional). For **aggregate_temporal** : Left-closed temporal intervals,
 #' which are allowed to overlap.
 #' Each temporal interval in the array has exactly two elements:1.
 #' The first element is the start of the temporal interval. The specified instance
@@ -67,12 +67,12 @@
 #' the hour to be '24'(https://www.rfc-editor.org/rfc/rfc3339.html#section-5.7),
 #' **this process allows the value '24' for the hour** of an end time in order
 #' to make it possible that left-closed time intervals can fully cover the day.
-#' @param .labels For **aggregate_temporal** (optional) : Distinct labels for the intervals, which can contain dates
+#' @param .labels (optional). For **aggregate_temporal** (optional) : Distinct labels for the intervals, which can contain dates
 #' and/or times. Is only required to be specified if the values for the start of
 #' the temporal intervals are not distinct and thus the default labels would not
 #' be unique. The number of labels and the number of groups need to be equal.
-#' @param .con openeo connection
-#' @param .p processes available at .con
+#' @param .con (optional) openeo connection
+#' @param .p (optional) processes available at .con
 #' @return datacube
 #' @import dplyr openeo cli sf
 #' @details If .period is defined, aggregate_temporal_period is run. Else if
@@ -141,8 +141,15 @@ group_by.datacube <- function(.data = NULL, ..., .period = NULL, .reducer = NULL
     }
   }
 
+  # check mandatory argument
+  if (is.null(.data)) {
+    stop(cli::format_error(
+      "a datacube of class 'ProcessNode' and 'datacube' from
+      tidyopeneo MUST be passed"
+    ))}
+
   # if reducer is present, it can be either a function call or a function name as string
-  if (all( !is.null(.reducer))){
+  if (!is.null(.reducer)){
 
     if(inherits(.reducer, "character")){
       reducing_process = .reducer
@@ -150,7 +157,7 @@ group_by.datacube <- function(.data = NULL, ..., .period = NULL, .reducer = NULL
     }
 
   }else{
-    cli::format_error("ERROR : no reducer passed or not implemented")
+    stop(cli::format_error("ERROR : no reducer passed or not implemented"))
     }
 
   # aggregate_temporal_period

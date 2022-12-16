@@ -14,6 +14,7 @@
 #' @export
 datacube=function(id, data = NULL, .con = NULL){
 
+  if (is.null(data)){stop(cli::format_error("data argument must be provided"))}
   if (is.null(id) & !is.null(data)){
     class(data) = c(class(dc), "datacube") # Class definition
     data
