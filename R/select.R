@@ -18,7 +18,7 @@
 #' specified in micrometers. The order of the specified array defines the
 #' order of the bands in the data cube. If multiple bands match the wavelengths,
 #' all matched bands are included in the original order.
-#' @param .con openeo connection
+#' @param .con openeo connection. Default to "https://openeo.cloud"
 #' @param .p processes available at .con
 #' @return datacube
 #' @import dplyr openeo cli

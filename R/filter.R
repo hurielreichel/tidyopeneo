@@ -28,7 +28,7 @@
 #' filtering, specified as GeoJSON.
 #' @param .context (optional) : any Additional data to be passed to the condition.
 #' Mandatory for filter_labels or array_filter processes.
-#' @param .con (optional) openeo connection
+#' @param .con (optional) openeo connection. Default to "https://openeo.cloud"
 #' @param .p (optional) processes available at .con
 #' @return datacube
 #' @import dplyr openeo cli

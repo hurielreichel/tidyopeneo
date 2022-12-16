@@ -9,7 +9,7 @@
 #' `DimensionNotAvailable` exception if the specified dimension does not exist.
 #' @param .target A new Name for the dimension. Fails with a `DimensionExists`
 #' exception if a dimension with the specified name exists.
-#' @param .con (optional) openeo connection
+#' @param .con (optional) openeo connection. Default to "https://openeo.cloud"
 #' @param .p (optional) processes available at .con
 #' @return datacube
 #' @import dplyr openeo cli

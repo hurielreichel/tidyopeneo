@@ -71,7 +71,7 @@
 #' and/or times. Is only required to be specified if the values for the start of
 #' the temporal intervals are not distinct and thus the default labels would not
 #' be unique. The number of labels and the number of groups need to be equal.
-#' @param .con (optional) openeo connection
+#' @param .con (optional) openeo connection. Default to "https://openeo.cloud"
 #' @param .p (optional) processes available at .con
 #' @return datacube
 #' @import dplyr openeo cli sf
