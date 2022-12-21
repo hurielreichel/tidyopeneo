@@ -64,7 +64,7 @@
 filter.datacube <- function(.data = NULL, ...,
                             .condition = NULL, .dimension = NULL, .context = NULL,
                             .extent = NULL, .geometries = NULL,
-                            .p = openeo::processes(.con), .con = openeo::connect("openeo.cloud")) {
+                            .p = openeo::processes(.con), .con = openeo::connect("https://openeo.cloud")) {
 
   #check dots ...
   dots = list(...)

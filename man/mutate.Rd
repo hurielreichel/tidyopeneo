@@ -19,7 +19,7 @@
   .size = NULL,
   .overlap = NULL,
   .p = openeo::processes(.con),
-  .con = openeo::connect("openeo.cloud")
+  .con = openeo::connect("https://openeo.cloud")
 )
 }
 \arguments{
@@ -27,7 +27,7 @@
 
 \item{...}{any parameter inherited from dplyr}
 
-\item{.process}{for **apply** : A process that accepts and returns a single value
+\item{.process}{(optional) for **apply** : A process that accepts and returns a single value
 and is applied on each individual value in the data cube. The process may
 consist of multiple sub-processes and could, for example, consist of processes
 such as ``abs()`` or ``linear_scale_range()``.
@@ -38,18 +38,18 @@ For **apply_neighborhood** : Process to be applied on all neighborhoods.}
 
 \item{.context}{(optional) Additional data to be passed to the process.}
 
-\item{.kernel}{For **apply_kernel** : ernel as a two-dimensional array of
+\item{.kernel}{(optional) For **apply_kernel** : ernel as a two-dimensional array of
 weights. The inner level of the nested array aligns with the `x` axis and the
 outer level aligns with the `y` axis. Each level of the kernel must have an
 uneven number of elements, otherwise the process throws a
 `KernelDimensionsUneven` exception.}
 
-\item{.factor}{For **apply_kernel** : A factor that is multiplied to each value
+\item{.factor}{(optional) For **apply_kernel** : A factor that is multiplied to each value
 after the kernel has been applied.This is basically a shortcut for explicitly
 multiplying each value by a factor afterwards, which is often required for some
 kernel-based algorithms such as the Gaussian blur.}
 
-\item{.border}{For **apply_kernel** : Determines how the data is extended when
+\item{.border}{(optional). For **apply_kernel** : Determines how the data is extended when
 the kernel overlaps with the borders. Defaults to fill the border with zeroes.
 The following options are available:
 * *numeric value* - fill with a user-defined constant number `n`: `nnnnnn|abcdefgh|nnnnnn` (default, with `n` = 0)*
@@ -62,23 +62,23 @@ The following options are available:
 non-numerical or infinite numerical values with. By default, those values are
 replaced with zeroes.}
 
-\item{.dimension}{For **apply_dimension** : The name of the source dimension
+\item{.dimension}{(optional) For **apply_dimension** : The name of the source dimension
 to apply the process on. Fails with a `DimensionNotAvailable` exception if the
 specified dimension does not exist.}
 
-\item{.target_dimension}{For **apply_dimension** (optional): The name of the target
+\item{.target_dimension}{(optional) For **apply_dimension** (optional): The name of the target
 dimension or `null` (the default) to use the source dimension specified in the
 parameter `dimension`.By specifying a target dimension, the source dimension
 is removed. The target dimension with the specified name and the type `other`
 (see ``add_dimension()``) is created, if it doesn't exist yet.}
 
-\item{.size}{For **apply_neighborhood** : Neighborhood sizes along each dimension.
+\item{.size}{(optional) For **apply_neighborhood** : Neighborhood sizes along each dimension.
 This object maps dimension names to either a physical measure (e.g. 100 m, 10 days)
 or pixels (e.g. 32 pixels). For dimensions not specified, the default is to provide
 all values. Be aware that including all values from overly large dimensions may
 not be processed at once.}
 
-\item{.overlap}{For **apply_neighborhood** (optional): Overlap of neighborhoods along
+\item{.overlap}{(optional) For **apply_neighborhood** (optional): Overlap of neighborhoods along
 each dimension to avoid border effects. For instance a temporal dimension
 can add 1 month before and after a neighborhood. In the spatial dimensions,
 this is often a number of pixels. The overlap specified is added before and
@@ -86,9 +86,9 @@ after, so an overlap of 8 pixels will add 8 pixels on both sides of the window,
 so 16 in total.Be aware that large overlaps increase the need for computational
 resources and modifying overlapping data in subsequent operations have no effect.}
 
-\item{.p}{processes available at .con}
+\item{.p}{(optional) processes available at .con}
 
-\item{.con}{openeo connection}
+\item{.con}{(optional) openeo connection. Default to "https://openeo.cloud"}
 }
 \value{
 datacube

@@ -114,7 +114,7 @@ mutate.datacube <- function(.data = NULL, ...,
                                 .kernel = NULL, .factor = 1, .border = 0,
                                 .replace_invalid = 0, .dimension = NULL, .target_dimension = NULL,
                                 .size = NULL, .overlap = NULL,
-                                .p = openeo::processes(.con), .con = openeo::connect("openeo.cloud")) {
+                                .p = openeo::processes(.con), .con = openeo::connect("https://openeo.cloud")) {
 
   #check dots ...
   dots = list(...)

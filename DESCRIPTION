@@ -11,8 +11,8 @@ Description: Use standard dplyr functions when working with openEO. The idea is
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Depends: R (>= 3.3.3), dplyr, openeo, cli
-Imports: sf
+Depends: R (>= 3.3.3), dplyr, openeo, cli, rjson
+Imports: sf, methods
 RoxygenNote: 7.2.1
 Suggests: 
     knitr,

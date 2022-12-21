@@ -14,7 +14,7 @@
   .extent = NULL,
   .geometries = NULL,
   .p = openeo::processes(.con),
-  .con = openeo::connect("openeo.cloud")
+  .con = openeo::connect("https://openeo.cloud")
 )
 }
 \arguments{
@@ -22,11 +22,12 @@
 
 \item{...}{any parameter inherited from dplyr}
 
-\item{.condition}{For **array_filter** : A condition that is evaluated against
-each value, index and/or label in the array. Only the array elements for
-which the condition returns `true` are preserved.}
+\item{.condition}{(optional) logical. For **array_filter** : A condition that is evaluated
+against each dimension label in the specified dimension. A dimension label and
+the corresponding data is preserved for the given dimension, if the condition
+returns true.}
 
-\item{.dimension}{For **filter_temporal** : The name of the temporal dimension
+\item{.dimension}{(optional) For **filter_temporal** : The name of the temporal dimension
 to filter on. If no specific dimension is specified or it is set to `null`,
 the filter applies to all temporal dimensions. Fails with a `DimensionNotAvailable`
 exception if the specified dimension does not exist.}
@@ -34,7 +35,7 @@ exception if the specified dimension does not exist.}
 \item{.context}{(optional) : any Additional data to be passed to the condition.
 Mandatory for filter_labels or array_filter processes.}
 
-\item{.extent}{For **filter_temporal**, the Left-closed temporal interval, i.e.
+\item{.extent}{(optional) For **filter_temporal**, the Left-closed temporal interval, i.e.
 an array with exactly two elements: The first element is the start of the
 temporal interval. The specified instance in time is **included** in the
 interval. The second element is the end of the temporal interval. The
@@ -45,12 +46,12 @@ never both.
 For **filter_bbox**, the bounding box, which may include a vertical axis
 (see `base` and `height`).}
 
-\item{.geometries}{For **filter_spatial** : one or more geometries used for
+\item{.geometries}{(optional) For **filter_spatial** : one or more geometries used for
 filtering, specified as GeoJSON.}
 
-\item{.p}{processes available at .con}
+\item{.p}{(optional) processes available at .con}
 
-\item{.con}{openeo connection}
+\item{.con}{(optional) openeo connection. Default to "https://openeo.cloud"}
 }
 \value{
 datacube

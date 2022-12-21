@@ -11,7 +11,7 @@
   .source,
   .target,
   .p = openeo::processes(.con),
-  .con = openeo::connect("openeo.cloud")
+  .con = openeo::connect("https://openeo.cloud")
 )
 }
 \arguments{
@@ -25,9 +25,9 @@
 \item{.target}{A new Name for the dimension. Fails with a `DimensionExists`
 exception if a dimension with the specified name exists.}
 
-\item{.p}{processes available at .con}
+\item{.p}{(optional) processes available at .con}
 
-\item{.con}{openeo connection}
+\item{.con}{(optional) openeo connection. Default to "https://openeo.cloud"}
 }
 \value{
 datacube

@@ -39,7 +39,7 @@
 #' @export
 summarize.datacube <- function(.data = NULL, ..., .reducer = NULL,
                                .dimension = NULL, .context = NULL,
-                               .p = openeo::processes(.con), .con = openeo::connect("openeo.cloud")) {
+                               .p = openeo::processes(.con), .con = openeo::connect("https://openeo.cloud")) {
 
   #check dots ...
   dots = list(...)

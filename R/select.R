@@ -32,7 +32,7 @@
 #' @export
 select.datacube <- function(.data = NULL, ...,
                             .bands = NULL, .wavelength = NULL,
-                            .p = openeo::processes(.con), .con = openeo::connect("openeo.cloud")) {
+                            .p = openeo::processes(.con), .con = openeo::connect("https://openeo.cloud")) {
 
 
   #check dots ...

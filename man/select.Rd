@@ -11,7 +11,7 @@
   .bands = NULL,
   .wavelength = NULL,
   .p = openeo::processes(.con),
-  .con = openeo::connect("openeo.cloud")
+  .con = openeo::connect("https://openeo.cloud")
 )
 }
 \arguments{
@@ -36,7 +36,7 @@ all matched bands are included in the original order.}
 
 \item{.p}{processes available at .con}
 
-\item{.con}{openeo connection}
+\item{.con}{openeo connection. Default to "https://openeo.cloud"}
 }
 \value{
 datacube

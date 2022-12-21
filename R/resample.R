@@ -83,7 +83,8 @@
 resample <- function(.data = NULL, .resolution = 0, .projection = NULL,
                      .method = "near", .align = "upper-left",
                      .target = NULL, .dimension = NULL,
-                     .valid_within = NULL, .target_process = NULL) {
+                     .valid_within = NULL, .target_process = NULL,
+                     .p = openeo::processes(.con), .con = openeo::connect("https://openeo.cloud")) {
   UseMethod("resample")
 }
 
@@ -93,7 +94,7 @@ resample.datacube <- function(.data = NULL, .resolution = 0, .projection = NULL,
                               .method = "near", .align = "upper-left",
                               .target = NULL, .dimension = NULL,
                               .valid_within = NULL, .target_process = NULL,
-                              .p = openeo::processes(.con), .con = openeo::connect("openeo.cloud")) {
+                              .p = openeo::processes(.con), .con = openeo::connect("https://openeo.cloud")) {
 
   # check mandatory argument
   if (is.null(.data)) {

@@ -14,7 +14,9 @@ resample(
   .target = NULL,
   .dimension = NULL,
   .valid_within = NULL,
-  .target_process = NULL
+  .target_process = NULL,
+  .p = openeo::processes(.con),
+  .con = openeo::connect("https://openeo.cloud")
 )
 
 \method{resample}{datacube}(
@@ -28,24 +30,24 @@ resample(
   .valid_within = NULL,
   .target_process = NULL,
   .p = openeo::processes(.con),
-  .con = openeo::connect("openeo.cloud")
+  .con = openeo::connect("https://openeo.cloud")
 )
 }
 \arguments{
 \item{.data}{datacube object from tidyopeneo}
 
-\item{.resolution}{For **resample_spatial** : Resamples the data cube to the
+\item{.resolution}{(optional) For **resample_spatial** : Resamples the data cube to the
 target resolution, which can be specified either as separate values for x and
 y or as a single value for both axes. Specified in the units of the target
 projection. Doesn't change the resolution by default (`0`).}
 
-\item{.projection}{For **resample_spatial** : Warps the data cube to the
+\item{.projection}{(optional) For **resample_spatial** : Warps the data cube to the
 target projection, specified as as EPSG code(http://www.epsg-registry.org/),
 WKT2 (ISO 19162) string (http://docs.opengeospatial.org/is/18-010r7/18-010r7.html,
 PROJ definition (deprecated) (https://proj.org/usage/quickstart.html), By default
 (`null`), the projection is not changed.}
 
-\item{.method}{For **resample_spatial** or **resample_cube_spatial**: Resampling method to use. The
+\item{.method}{(optional) For **resample_spatial** or **resample_cube_spatial**: Resampling method to use. The
 following options are available and are meant to align with
 `gdalwarp` (https://gdal.org/programs/gdalwarp.html#cmdoption-gdalwarp-r) :
 * `average`: average (mean) resampling, computes the weighted average of all valid pixels*
@@ -62,14 +64,14 @@ of all valid pixels* `rms` root mean square (quadratic mean) of all valid
 pixels* `sum`: compute the weighted sum of all valid pixels Valid
 pixels are determined based on the function ``is_valid()``.}
 
-\item{.align}{For **resample_spatial** : Specifies to which corner of the spatial
+\item{.align}{(optional) For **resample_spatial** : Specifies to which corner of the spatial
 extent the new resampled data is aligned to.}
 
-\item{.target}{For **resample_cube_spatial** : A data cube that describes the
+\item{.target}{(optional) For **resample_cube_spatial** : A data cube that describes the
 spatial target resolution. For **resample_cube_temporal** : A data cube that
 describes the temporal target resolution.}
 
-\item{.dimension}{For **resample_cube_temporal** (optional) : he name of the temporal
+\item{.dimension}{(optional) For **resample_cube_temporal** (optional) : he name of the temporal
 dimension to resample, which must exist with this name in both data cubes.
 If the dimension is not set or is set to `null`, the process resamples all
 temporal dimensions that exist with the same names in both data cubes.The
@@ -79,7 +81,7 @@ one of them is not temporal: `DimensionMismatch`* No specific dimension name
 is given and there are no temporal dimensions with the same name in the
 data: `DimensionMismatch`.}
 
-\item{.valid_within}{For **resample_cube_temporal** (optional): Setting this parameter
+\item{.valid_within}{(optional) For **resample_cube_temporal** (optional): Setting this parameter
 to a numerical value enables that the process searches for valid values within
 the given period of days before and after the target timestamps. Valid values
 are determined based on the function ``is_valid()``. For example, the limit
@@ -88,12 +90,12 @@ neighbor after `2020-01-08 12:00:00` and before `2020-01-22 12:00:00`.
 If no valid value is found within the given period, the value will be set
 to no-data (`null`).}
 
-\item{.target_process}{either "spatial" to apply **resample_cube_spatial** or
+\item{.target_process}{(optional) either "spatial" to apply **resample_cube_spatial** or
 "temporal" to apply **resample_cube_temporal**.}
 
-\item{.p}{processes available at .con}
+\item{.p}{(optional) processes available at .con}
 
-\item{.con}{openeo connection}
+\item{.con}{(optional) openeo connection. Default to "https://openeo.cloud"}
 }
 \value{
 datacube

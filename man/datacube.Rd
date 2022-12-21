@@ -4,7 +4,12 @@
 \alias{datacube}
 \title{Create Datacube Class}
 \usage{
-datacube(id, data = NULL, .con = NULL)
+datacube(
+  id,
+  data = NULL,
+  .p = openeo::processes(.con),
+  .con = openeo::connect("https://openeo.cloud")
+)
 }
 \arguments{
 \item{id}{character containing the collection name to be passed to
@@ -13,7 +18,9 @@ This is understood as the **starting point** when working with tidyopeneo. (opti
 
 \item{data}{ProcessNode datacube from openeo (optional)}
 
-\item{.con}{character link to openeo connection. Default to "https://openeo.cloud"}
+\item{.p}{(optional) processes available at .con}
+
+\item{.con}{(optional) character link to openeo connection. Default to "https://openeo.cloud"}
 }
 \value{
 datacube

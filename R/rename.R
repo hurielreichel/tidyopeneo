@@ -35,7 +35,7 @@
 #'    rename(.source = "spatial", .target = "space")
 #' @export
 rename.datacube <- function(.data = NULL, ..., .source, .target,
-                            .p = openeo::processes(.con), .con = openeo::connect("openeo.cloud")) {
+                            .p = openeo::processes(.con), .con = openeo::connect("https://openeo.cloud")) {
 
   #check dots ...
   dots = list(...)
