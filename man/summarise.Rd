@@ -12,7 +12,7 @@
   .dimension = NULL,
   .context = NULL,
   .p = openeo::processes(.con),
-  .con = openeo::connect("https://openeo.cloud")
+  .con = NULL
 )
 }
 \arguments{
@@ -43,7 +43,7 @@ Summarise datacube wraps the reduce_dimension(https://processes.openeo.org/#redu
 }
 \examples{
 library(tidyopeneo)
-
+con = connect(host = "https://openeo.cloud")
 # bounding box
 w = 6.09
 s = 46.15

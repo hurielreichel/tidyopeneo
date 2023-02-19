@@ -17,7 +17,7 @@
   .intervals = NULL,
   .labels = array(),
   .p = openeo::processes(.con),
-  .con = openeo::connect("https://openeo.cloud")
+  .con = NULL
 )
 }
 \arguments{
@@ -117,7 +117,7 @@ aggregate_temporal runs.
 \examples{
 library(tidyopeneo)
 library(sf)
-
+con = connect(host = "https://openeo.cloud")
 # bounding box
 w = 6.09
 s = 46.15

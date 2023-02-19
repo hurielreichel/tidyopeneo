@@ -72,7 +72,7 @@
 #' @importFrom dplyr mutate
 #' @examples
 #' library(tidyopeneo)
-#'
+#' con = connect(host = "https://openeo.cloud")
 #' dc = datacube(id = "SENTINEL_5P_L2")
 #'
 #' # apply
@@ -114,7 +114,7 @@ mutate.datacube <- function(.data = NULL, ...,
                                 .kernel = NULL, .factor = 1, .border = 0,
                                 .replace_invalid = 0, .dimension = NULL, .target_dimension = NULL,
                                 .size = NULL, .overlap = NULL,
-                                .p = openeo::processes(.con), .con = openeo::connect("https://openeo.cloud")) {
+                                .p = openeo::processes(.con), .con = NULL) {
 
   #check dots ...
   dots = list(...)

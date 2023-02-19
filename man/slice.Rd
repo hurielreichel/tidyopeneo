@@ -11,7 +11,7 @@
   n = 1,
   prop = NULL,
   .p = openeo::processes(.con),
-  .con = openeo::connect("https://openeo.cloud")
+  .con = NULL
 )
 }
 \arguments{
@@ -49,6 +49,7 @@ interpreted as "days".
 }
 \examples{
 library(tidyopeneo)
+con = connect(host = "https://openeo.cloud")
 
 dc = datacube("TERRASCOPE_S5P_L3_NO2_TD_V1")
 

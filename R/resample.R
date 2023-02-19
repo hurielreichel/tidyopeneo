@@ -63,6 +63,7 @@
 #' @import dplyr openeo cli
 #' @examples
 #' library(tidyopeneo)
+#' con = connect(host = "https://openeo.cloud")
 #'
 #' # bounding box
 #' w = 6.09
@@ -84,7 +85,7 @@ resample <- function(.data = NULL, .resolution = 0, .projection = NULL,
                      .method = "near", .align = "upper-left",
                      .target = NULL, .dimension = NULL,
                      .valid_within = NULL, .target_process = NULL,
-                     .p = openeo::processes(.con), .con = openeo::connect("https://openeo.cloud")) {
+                     .p = openeo::processes(.con), .con = NULL) {
   UseMethod("resample")
 }
 
@@ -94,7 +95,7 @@ resample.datacube <- function(.data = NULL, .resolution = 0, .projection = NULL,
                               .method = "near", .align = "upper-left",
                               .target = NULL, .dimension = NULL,
                               .valid_within = NULL, .target_process = NULL,
-                              .p = openeo::processes(.con), .con = openeo::connect("https://openeo.cloud")) {
+                              .p = openeo::processes(.con), .con = NULL) {
 
   # check mandatory argument
   if (is.null(.data)) {

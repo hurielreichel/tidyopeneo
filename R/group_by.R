@@ -83,7 +83,7 @@
 #' @examples
 #' library(tidyopeneo)
 #' library(sf)
-#'
+#' con = connect(host = "https://openeo.cloud")
 #' # bounding box
 #' w = 6.09
 #' s = 46.15
@@ -130,7 +130,7 @@ group_by.datacube <- function(.data = NULL, ..., .period = NULL, .reducer = NULL
                               .dimension = NULL, .context = NULL,
                               .geometries = NULL, .target_dimension = "result",
                               .intervals = NULL, .labels = array(),
-                              .p = openeo::processes(.con), .con = openeo::connect("https://openeo.cloud")) {
+                              .p = openeo::processes(.con), .con = NULL) {
 
   #check dots ...
   dots = list(...)

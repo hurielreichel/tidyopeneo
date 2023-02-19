@@ -11,7 +11,7 @@
   .source,
   .target,
   .p = openeo::processes(.con),
-  .con = openeo::connect("https://openeo.cloud")
+  .con = NULL
 )
 }
 \arguments{
@@ -38,6 +38,7 @@ Rename datacube dimension  wraps the rename_dimension(https://processes.openeo.o
 }
 \examples{
 library(tidyopeneo)
+con = connect(host = "https://openeo.cloud")
 
 # bounding box
 w = 6.09

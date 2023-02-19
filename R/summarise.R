@@ -20,7 +20,7 @@
 #' @seealso [openeo::list_processes()]
 #' @examples
 #' library(tidyopeneo)
-#'
+#' con = connect(host = "https://openeo.cloud")
 #' # bounding box
 #' w = 6.09
 #' s = 46.15
@@ -39,7 +39,7 @@
 #' @export
 summarise.datacube <- function(.data = NULL, ..., .reducer = NULL,
                               .dimension = NULL, .context = NULL,
-                              .p = openeo::processes(.con), .con = openeo::connect("https://openeo.cloud")) {
+                              .p = openeo::processes(.con), .con = NULL) {
 
   #check dots ...
   dots = list(...)

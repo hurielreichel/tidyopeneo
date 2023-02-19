@@ -14,7 +14,7 @@
   .extent = NULL,
   .geometries = NULL,
   .p = openeo::processes(.con),
-  .con = openeo::connect("https://openeo.cloud")
+  .con = NULL
 )
 }
 \arguments{
@@ -64,6 +64,7 @@ filter_spatial and array_filter functions into a simulated dplyr's \code{\link[d
 library(tidyopeneo)
 library(sf)
 
+con = connect(host = "https://openeo.cloud")
 dc = datacube(id = "SENTINEL_5P_L2")
 
 # filter_temporal and filter_bbox

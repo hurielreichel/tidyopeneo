@@ -4,12 +4,7 @@
 \alias{datacube}
 \title{Create Datacube Class}
 \usage{
-datacube(
-  id,
-  data = NULL,
-  .p = openeo::processes(.con),
-  .con = openeo::connect("https://openeo.cloud")
-)
+datacube(id, data = NULL, .p = openeo::processes(.con), .con = NULL)
 }
 \arguments{
 \item{id}{character containing the collection name to be passed to

@@ -11,7 +11,7 @@
   .bands = NULL,
   .wavelength = NULL,
   .p = openeo::processes(.con),
-  .con = openeo::connect("https://openeo.cloud")
+  .con = NULL
 )
 }
 \arguments{
@@ -47,6 +47,7 @@ into a simulated dplyr's \code{\link[dplyr]{select}}.
 }
 \examples{
 library(tidyopeneo)
+con = connect(host = "https://openeo.cloud")
 dc = datacube(id = "SENTINEL_5P_L2")
 
 dc_no2 <- dc \%>\% select(.bands = "NO2")

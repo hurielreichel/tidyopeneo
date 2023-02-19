@@ -38,6 +38,7 @@
 #' library(tidyopeneo)
 #' library(sf)
 #'
+#' con = connect(host = "https://openeo.cloud")
 #' dc = datacube(id = "SENTINEL_5P_L2")
 #'
 #' # filter_temporal and filter_bbox
@@ -64,7 +65,7 @@
 filter.datacube <- function(.data = NULL, ...,
                             .condition = NULL, .dimension = NULL, .context = NULL,
                             .extent = NULL, .geometries = NULL,
-                            .p = openeo::processes(.con), .con = openeo::connect("https://openeo.cloud")) {
+                            .p = openeo::processes(.con), .con = NULL) {
 
   #check dots ...
   dots = list(...)

@@ -30,6 +30,7 @@
 #' @importFrom methods as
 #' @examples
 #' library(tidyopeneo)
+#' con = connect(host = "https://openeo.cloud")
 #'
 #' dc = datacube("TERRASCOPE_S5P_L3_NO2_TD_V1")
 #'
@@ -45,7 +46,7 @@
 #' @export
 slice.datacube <- function(.data = NULL, ...,
                   n = 1, prop = NULL,
-                  .p = openeo::processes(.con), .con = openeo::connect("https://openeo.cloud")){
+                  .p = openeo::processes(.con), .con = NULL){
 
   #check dots ...
   dots = list(...)

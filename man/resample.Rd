@@ -16,7 +16,7 @@ resample(
   .valid_within = NULL,
   .target_process = NULL,
   .p = openeo::processes(.con),
-  .con = openeo::connect("https://openeo.cloud")
+  .con = NULL
 )
 
 \method{resample}{datacube}(
@@ -30,7 +30,7 @@ resample(
   .valid_within = NULL,
   .target_process = NULL,
   .p = openeo::processes(.con),
-  .con = openeo::connect("https://openeo.cloud")
+  .con = NULL
 )
 }
 \arguments{
@@ -113,6 +113,7 @@ be run, or if "temporal" is set, resample_cube_temporal is gonna be run.
 }
 \examples{
 library(tidyopeneo)
+con = connect(host = "https://openeo.cloud")
 
 # bounding box
 w = 6.09

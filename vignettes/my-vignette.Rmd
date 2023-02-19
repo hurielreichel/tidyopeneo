@@ -19,7 +19,7 @@ The **tidyopeneo** package was created with the intention to make the [openeo](h
 ```{r processes, echo=TRUE}
 library(openeo)
 
-con = con = connect(host = "https://openeo.cloud")
+con = connect(host = "https://openeo.cloud")
 p = processes()
 
 dc = p$load_collection(

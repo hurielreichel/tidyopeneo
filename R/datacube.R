@@ -14,8 +14,8 @@
 #' tidyopeneo and you want to come back to use tidyopeneo functions.
 #' @export
 datacube=function(id, data = NULL,
-                  .p = openeo::processes(.con),
-                  .con = openeo::connect("https://openeo.cloud")){
+                    .p = openeo::processes(.con),
+                    .con = NULL){
 
   if (is.null(id) & !is.null(data)){
     class(data) = c("datacube", class(data)) # Class definition

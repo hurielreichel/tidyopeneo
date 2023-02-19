@@ -19,7 +19,7 @@
   .size = NULL,
   .overlap = NULL,
   .p = openeo::processes(.con),
-  .con = openeo::connect("https://openeo.cloud")
+  .con = NULL
 )
 }
 \arguments{
@@ -111,7 +111,7 @@ For  **apply_neighborhood** define .data, .process, size, and, optionally,
 }
 \examples{
 library(tidyopeneo)
-
+con = connect(host = "https://openeo.cloud")
 dc = datacube(id = "SENTINEL_5P_L2")
 
 # apply

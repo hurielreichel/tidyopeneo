@@ -17,6 +17,7 @@
 #' @importFrom dplyr rename
 #' @examples
 #' library(tidyopeneo)
+#' con = connect(host = "https://openeo.cloud")
 #'
 #' # bounding box
 #' w = 6.09
@@ -35,7 +36,7 @@
 #'    rename(.source = "spatial", .target = "space")
 #' @export
 rename.datacube <- function(.data = NULL, ..., .source, .target,
-                            .p = openeo::processes(.con), .con = openeo::connect("https://openeo.cloud")) {
+                            .p = openeo::processes(.con), .con = NULL) {
 
   #check dots ...
   dots = list(...)
