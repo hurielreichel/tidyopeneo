@@ -2,4 +2,4 @@
 
 ## Example with NDVI
 
-![NDVI Example](doc/ndvi-example.jpeg)
+![NDVI Example](ndvi-example.jpeg)
