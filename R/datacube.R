@@ -4,7 +4,7 @@
 #' openeo::processes()$load_collection() (https://processes.openeo.org/#load_collection).
 #' This is understood as the **starting point** when working with tidyopeneo. (optional)
 #' @param data ProcessNode datacube from openeo (optional)
-#' @param .con (optional) character link to openeo connection. Default to "https://openeo.cloud"
+#' @param .con (optional) character link to openeo connection. Default to NULL
 #' @param .p (optional) processes available at .con
 #' @return datacube
 #' @import openeo

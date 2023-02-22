@@ -1,6 +1,6 @@
 Package: tidyopeneo
 Type: Package
-Title: tidyopeneo : Wrap dplyr functions for openEO datacubes (OpenEOWrap)
+Title: tidyopeneo : Wrap dplyr functions for openEO datacubes (tidyopeneo)
 Version: 0.1.0
 Author: Huriel Reichel
 Maintainer: The package maintainer <huriel.reichel@protonmail.com>
@@ -13,7 +13,7 @@ Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.3.3), dplyr, openeo, cli, rjson
 Imports: sf, methods
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Suggests: 
     knitr,
     rmarkdown,

@@ -98,7 +98,7 @@ be unique. The number of labels and the number of groups need to be equal.}
 
 \item{.p}{(optional) processes available at .con}
 
-\item{.con}{(optional) openeo connection. Default to "https://openeo.cloud"}
+\item{.con}{(optional) openeo connection. Default to NULL}
 }
 \value{
 datacube

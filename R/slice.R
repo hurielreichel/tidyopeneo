@@ -20,7 +20,7 @@
 #' If n is greater than the number of days available in the collection or datacube (or prop > 1), the result
 #' will be truncated to the group size. If the proportion of a group size does not yield an integer number of
 #'rows, the absolute value of prop * ndays(.data) is rounded down.
-#' @param .con (optional) openeo connection. Default to "https://openeo.cloud"
+#' @param .con (optional) openeo connection. Default to NULL
 #' @param .p (optional) processes available at .con
 #' @return datacube
 #' @import dplyr openeo cli

@@ -32,7 +32,7 @@ a `DimensionNotAvailable` exception if the specified dimension does not exist.}
 
 \item{.p}{(optional) processes available at .con}
 
-\item{.con}{(optional) openeo connection. Default to "https://openeo.cloud"}
+\item{.con}{(optional) openeo connection. Default to NULL}
 }
 \value{
 datacube

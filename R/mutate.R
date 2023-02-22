@@ -57,7 +57,7 @@
 #' after, so an overlap of 8 pixels will add 8 pixels on both sides of the window,
 #' so 16 in total.Be aware that large overlaps increase the need for computational
 #' resources and modifying overlapping data in subsequent operations have no effect.
-#' @param .con (optional) openeo connection. Default to "https://openeo.cloud"
+#' @param .con (optional) openeo connection. Default to NULL
 #' @param .p (optional) processes available at .con
 #' @return datacube
 #' @import dplyr openeo cli

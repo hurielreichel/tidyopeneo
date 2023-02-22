@@ -12,7 +12,7 @@
 #' @param .dimension The name of the dimension over which to reduce. Fails with
 #' a `DimensionNotAvailable` exception if the specified dimension does not exist.
 #' @param .context (optional) Additional data to be passed to the reducer (optional).
-#' @param .con (optional) openeo connection. Default to "https://openeo.cloud"
+#' @param .con (optional) openeo connection. Default to NULL
 #' @param .p (optional) processes available at .con
 #' @return datacube
 #' @import dplyr openeo cli

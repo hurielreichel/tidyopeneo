@@ -37,7 +37,7 @@ rows, the absolute value of prop * ndays(.data) is rounded down.}
 
 \item{.p}{(optional) processes available at .con}
 
-\item{.con}{(optional) openeo connection. Default to "https://openeo.cloud"}
+\item{.con}{(optional) openeo connection. Default to NULL}
 }
 \value{
 datacube

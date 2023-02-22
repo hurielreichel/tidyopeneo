@@ -88,7 +88,7 @@ resources and modifying overlapping data in subsequent operations have no effect
 
 \item{.p}{(optional) processes available at .con}
 
-\item{.con}{(optional) openeo connection. Default to "https://openeo.cloud"}
+\item{.con}{(optional) openeo connection. Default to NULL}
 }
 \value{
 datacube

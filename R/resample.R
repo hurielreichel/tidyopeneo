@@ -53,7 +53,7 @@
 #' to no-data (`null`).
 #' @param .target_process (optional) either "spatial" to apply **resample_cube_spatial** or
 #' "temporal" to apply **resample_cube_temporal**.
-#' @param .con (optional) openeo connection. Default to "https://openeo.cloud"
+#' @param .con (optional) openeo connection. Default to NULL
 #' @param .p (optional) processes available at .con
 #' @return datacube
 #' @details if arg .target is not defined, resample_spatial is gonna be run.

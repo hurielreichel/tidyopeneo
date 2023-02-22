@@ -36,7 +36,7 @@ all matched bands are included in the original order.}
 
 \item{.p}{processes available at .con}
 
-\item{.con}{openeo connection. Default to "https://openeo.cloud"}
+\item{.con}{openeo connection. Default to NULL}
 }
 \value{
 datacube

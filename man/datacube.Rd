@@ -15,7 +15,7 @@ This is understood as the **starting point** when working with tidyopeneo. (opti
 
 \item{.p}{(optional) processes available at .con}
 
-\item{.con}{(optional) character link to openeo connection. Default to "https://openeo.cloud"}
+\item{.con}{(optional) character link to openeo connection. Default to NULL}
 }
 \value{
 datacube

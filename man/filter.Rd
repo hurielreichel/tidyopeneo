@@ -13,6 +13,8 @@
   .context = NULL,
   .extent = NULL,
   .geometries = NULL,
+  .year = NULL,
+  .month = NULL,
   .p = openeo::processes(.con),
   .con = NULL
 )
@@ -49,9 +51,15 @@ For **filter_bbox**, the bounding box, which may include a vertical axis
 \item{.geometries}{(optional) For **filter_spatial** : one or more geometries used for
 filtering, specified as GeoJSON.}
 
+\item{.year}{integer or list of integers stating the years you want to filter on the
+datacube.}
+
+\item{.month}{integer or list of integers referring to the months you want to filter
+on the datacube.}
+
 \item{.p}{(optional) processes available at .con}
 
-\item{.con}{(optional) openeo connection. Default to "https://openeo.cloud"}
+\item{.con}{(optional) openeo connection. Default to NULL}
 }
 \value{
 datacube
@@ -65,10 +73,17 @@ library(tidyopeneo)
 library(sf)
 
 con = connect(host = "https://openeo.cloud")
-dc = datacube(id = "SENTINEL_5P_L2")
+dc = datacube(id = "SENTINEL1_GRD")
+
+# filter_temporal
+dc_y = dc \%>\% filter(.year = c(2020, 2021, 2022))
+
+dc_m = dc \%>\% filter(.month = c(6,7,8))
+
+dc_ym = dc \%>\%  filter(.year = c(2020, 2021, 2022), .month = c(6,7,8))
 
 # filter_temporal and filter_bbox
-dc = dc \%>\%
+dc2 = dc \%>\%
     filter(.extent = c("2021-01-01", "2021-03-03")) \%>\%
     filter(.extent = c(west = 6.09, east = 6.99, south = 46.15, north = 46.57))
 
@@ -81,7 +96,7 @@ pol <- pol_coords \%>\%
     st_bbox() \%>\%
     st_as_sfc()
 
-dc = dc \%>\% filter(.geometries = pol)
+dc = dc2 \%>\% filter(.geometries = pol)
 
 # array_filter
 # ToDO...

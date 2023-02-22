@@ -1,5 +1,6 @@
 test_that("slice creates object of class 'datacube'", {
 
+  con = connect(host = "https://openeo.cloud")
   dc = datacube(id = "SENTINEL_5P_L2")
   dc_1 = dc %>%
     filter(.extent = c("2021-01-01", "2021-03-03")) %>%
