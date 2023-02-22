@@ -232,7 +232,7 @@ filter.datacube <- function(.data = NULL, ...,
         date1 =  paste(years[y], months[m], "01", sep = "-")
         date2 = paste(years[y], next_months[m], "01", sep = "-")
         date2 = as.Date(date2) - 1
-        date2 = date2 %>% format(., "%04Y-%m-%d")
+        date2 = date2 %>% format("%04Y-%m-%d")
 
         if (date1 < native_time_ext[1] | date2 > native_time_ext[2]){
           next
