@@ -5,6 +5,8 @@ vignette: >
   %\VignetteIndexEntry{my-vignette}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::knitr}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r, include = FALSE}
@@ -14,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The **tidyopeneo** package was created with the intention to make the [openeo](https://cran.r-project.org/web/packages/openeo/index.html) package processes more flexible. This is due to the fact that the openeo processes are usually too "APIish". Therefore, so far, when using openeo processes, the feeling is mainly that you are not handling R code, but an specific API. For example, when trying a simple [filter_bands()](https://processes.openeo.org/#filter_bands), the code would look as something like this:
+The **tidyopeneo** package was created with the intention to make the [openeo](https://cran.r-project.org/web/packages/openeo/index.html) package processes more flexible. This is due to the fact that the openeo processes are usually too "APIish". Therefore, so far, when using openeo processes, the feeling is mainly that you are not handling R code, but a specific API. For example, when trying a simple [filter_bands()](https://processes.openeo.org/#filter_bands), the code would look as something like this:
 
 ```{r processes, echo=TRUE}
 library(openeo)
@@ -32,15 +34,15 @@ dc_no2 = p$filter_bands(data = dc, bands = "NO2")
 
 ```
 
-We always need to call a *processes()* object and call the desired function from it using the dollar sign. Moreover, we need to memorise too many of these processes in order to use them. In order to help the development of this package, it was thought on the tidyverse and how many application are driving to it. Why not openEO then? This is probably a good way to go. Nevertheless, the aim here was to wrap some of the processes from the openEO API into dplyr's functions, such as the famous *filter*, *mutate*, *filter*, and so on. A guide on how exactly this was wrapped can be seen in the figure below. 
+The user always needs to call a *processes()* object and call the desired function from it using the dollar sign ("$"). Moreover, we need to remember too many of these processes in order to use them. That is exactly where the tidyverse comes into the scene. The methods from *dplyr* are quite straightforward and natural, and for this reason many tools and scripts are being converted into this so called "universe". In that sense, why not wrap some of the main openEO processes into *dplyr* functions? Whay could not datacubes be treated similarly to data frames / tibbles. Therefore, the aim here was to wrap some of the processes from the openEO API into dplyr's functions, such as the famous *filter*, *mutate*, *filter*, and so on. A guide on how exactly this was wrapped can be seen in the figure below.
 
 <img src="struc.png" alt="openEO processes and their relative wrapped functions in tidyopeneo" width="600"/>
 
-Pay attention to the fact that all the functions were wrapped into dplyr's function, in exception to *resample*, which was fully newly created. For this specific case, this is more of an experiment to analyse whether just wrapping into dplyr functions is enough or maybe new functions could also be accepted. In general, as the idea is also to simplify openEO API processes, this came quickly to mind. For sure, as this is work in progress, more processes and wrapped functions shall show up, and even change.  
+Pay attention to the fact that all the functions were wrapped into dplyr's function, in exception to *resample*, which was fully newly created. For this specific case, this is more of an experiment to analyse whether just wrapping into dplyr functions is enough or maybe new functions could also be accepted. In general, as the idea is also to simplify openEO API processes, this came quickly to mind. For sure, as this is work in progress, more processes and wrapped functions might show up. Another important topic refers to **group_by** and **summarise**. The idea is to have something very similar as in dplyr, where one first aggregates the data and later uses *summarise* on the aggregated data. The same logic applies. The **group_by** here will aggregate the cube per day, per geometry or time interval and lately, **summarise** will be applied. The **groub_by** simply creates a subclass called "grouped datacube", whilst saving the ".by" argument into the environment of the "grouped datacube" object, which is then retrieved by **summarise**. If the datacube in question is not a "grouped datacube", simply "reduce_dimension" process is run.    
 
-We hope that with the development of this package, more people from the R community will feel like using openEO for Earth Observation tasks. 
+The hope is that with the development of this package, more people from the R community will feel like using openEO for Earth Observation tasks. 
 
-With the mission to aggregate and simplify some of the main processes from openeo, below you may see a first example on how to call the class "datacube" from tidyopeneo, which is understood as the first step when working with the package. The class "datacube" already sets a connection with openeo.cloud and only requires the id argument. You can also pass it to another "ProcessNode" object from openeo too.
+With the mission to aggregate and simplify some of the main processes from openeo, below one may see a first example on how to call the class "datacube" from tidyopeneo, which is understood as the first step when working with the package. The class "datacube" already sets a connection with openeo.cloud and only requires the id argument. One can also pass it to another "ProcessNode" object from openeo too.
 
 ```{r setup}
 knitr::opts_chunk$set(echo = TRUE)
@@ -52,7 +54,7 @@ dc = datacube(id = "SENTINEL_5P_L2")
 
 ## filter
 
-From now on, we can work completely in a *tidy* syntax and use even the infamous pipes ( %>% ). The first example below demonstrates the filter_bands process and how it is wrapped in tidyopeneo. 
+From now on, we can work completely in a *tidy* syntax and use even the infamous pipes ( %>% ). The first example below demonstrates the **filter_bands** process and how it is wrapped in tidyopeneo. 
 
 ```{r filter, echo=TRUE}
 dc_select = dc %>% select(.bands = "NO2")
@@ -82,7 +84,7 @@ Have a look on how we define the filter and how much it looks like a dplyr workf
 
 ## mutate
 
-The mutate() function is also a big wrapper. It includes four processes again and they are all *apply* processes. In those terms, the example below demonstrates the use of this wrapper :
+The **mutate()** function is also a big wrapper. It includes four processes again and they are all *apply* processes. In those terms, the example below demonstrates the use of this wrapper :
 
 ```{r mutate, echo = TRUE}
 dc_cloud = dc %>% 
@@ -98,7 +100,8 @@ threshold_ <- function(data, context) {
 }
 
 # apply the threshold to the cube
-cloud_threshold = dc_cloud %>% mutate(.process = threshold_)
+cloud_threshold = dc_cloud %>% 
+  mutate(.process = threshold_)
 
 # mask the cloud cover with the calculated mask
 dc_masked <- p$mask(dc_filtered, cloud_threshold)
@@ -114,7 +117,7 @@ The rename() function wraps only rename_dimension process. In this, the main ide
 dc_rename = dc_filtered %>% rename(.source = "t", .target = "time")
 ```
 
-Another interesting point of tidyopeneo is to have more examples of the multiple usages coming from the differentes API processes. This is still lacking in openEO documentation and it is believed this package could help. This is all been built. 
+Another interesting point of tidyopeneo is to have more examples of the multiple usages coming from the different API processes. This is still lacking in openEO documentation and it is believed this package could help. This is all been built. 
 
 ## resample
 
@@ -129,61 +132,28 @@ dc_resample = dc_filtered %>% resample(.resolution = 10/111)
 The understanding of summarise in tidyopeneo is quite different than the one in dplyr. In spite of working on the column level, summarise works on all pixels of a given dimension and it wraps the reduce_dimension process. Again, a single function for a single process, therefore allowing it to run in magrittr pipes. 
 
 ```{r summarise, echo = TRUE}
-dc_summarised = dc_resample %>% summarise(.dimension = "t", .reducer = mean)
+dc_summarised = dc_resample %>% summarise(.reducer = "mean")
 ```
 
 It is important to mention that if you are more familiar with the American English version of summarise, i.e., summarize, this is also available, just like in dplyr. 
 
 ## group_by
 
-Finally, we have the group_by() function, which wraps the many aggregators from openEO API. The example below, demonstrates the usage:
+Finally, we have the group_by() function, which, as mentioned, only creates a subclass of the datacube class. "grouped datacube". Here are some example of how to make it interact with **summarise**. 
 
 ```{r group_by, echo = TRUE}
-lon = c(6.09, 6.99)
-lat = c(46.15, 46.57)
+dc_sum <- dc_resample %>%
+  group_by("t") %>%
+  summarise("sum")
 
-bbox_df = tibble(lon, lat)
-pol = st_polygon(
-  list(
-    cbind(
-       bbox_df$lon[c(1,2,2,1,1)],
-       bbox_df$lat[c(1,1,2,2,1)])
-      )
-)
-polygons = st_sfc(pol, crs=4326)
-polygons = st_sf(polygons)
-polygons$anAttribute <- 4
-
-r_ = function(data, context) { 
-  p = openeo::processes()
-  p$mean(data)
-  }
-
-dc_grouped <- dc %>% group_by(.reducer = r_, .geometries = polygons)
-
+dc_sum <- dc_resample %>%
+  group_by("space") %>%
+  summarise("sum")
 ```
 
-or similarly ...
+And just for you to notice the subclass...
 
 ```{r}
-dc_grouped <- dc %>% group_by(.reducer = "mean", .geometries = polygons)
+dc_grouped <- dc_resample %>% group_by("day")
+dc_grouped %>% class() %>% print()
 ```
-
-
-## Compute Results
-
-In order to demonstrate a long pipe with also exports, the following example is a good representation of the communication between openeo and tidyopeneo :
-
-```{r}
-dc_wrap = dc %>% 
-  select(.bands = "CO2") %>% #filter_bands
-  filter(.extent = c("2018-01-01", "2018-01-01")) %>% #filter_temporal
-  filter(.extent = list(west = 6.1, south = 46.1, east = 6.4, north = 46.4)) #filter_bbox
-
-# login()
-# graph = as(dc_wrap,"Graph")
-# compute_result(graph = graph, output_file = "tidyopeneo.png")
-# png("tidyopeneo.png")
-```
-
-Here it is also clear how tidyopeneo functions always print all the underlying openeo processes, which is not only useful for debugging, but maintains a good transparency with openeo, making of it more user-friendly (I hope...).

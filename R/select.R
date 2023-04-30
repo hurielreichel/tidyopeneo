@@ -37,12 +37,8 @@ select.datacube <- function(.data = NULL, ...,
 
 
   #check dots ...
-  dots = list(...)
-
-  for (i in dots){
-    if (length(dots) != 0){
-      inherits(dots)
-    }
+  if (length(list(...)) > 0) {
+    cli::cli_alert_warning("Additional arguments were passed")
   }
 
   # check mandatory argument

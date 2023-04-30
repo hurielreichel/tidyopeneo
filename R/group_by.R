@@ -1,83 +1,30 @@
 
 #' @title Group by Datacube
-#' @description Group by datacube wraps the aggregate_temporal_period(https://processes.openeo.org/#aggregate_temporal_period),
-#' aggregate_spatial (https://processes.openeo.org/#aggregate_spatial),
-#' and aggregate_temporal(https://processes.openeo.org/#aggregate_temporal),
-#'  functions into a simulated dplyr's \code{\link[dplyr]{group_by}}.
+#' @description Group by datacube works similarly to the dplyr's  \code{\link[dplyr]{group_by}}.
+#' It does not truly modifiy the datacube, but it registers a grouping or aggregation
+#' strategy. One can aggregate a datacube by its spatial dimension, or maybe its
+#' temporal dimension, or even a geometry (sf object).
+#'
+#' The group_by function interacts directly with summarise and it basically will create
+#' a subclass called "grouped datacube", with its aggregation method in its environment.
+#' That will be searched by the summarise function, when summarising.
 #' @name group_by
 #' @rdname group_by
 #' @param .data datacube object from tidyopeneo
 #' @param ... any parameter inherited from dplyr
-#' @param .period (optional) For **aggregate_temporal_period** : The time intervals to aggregate.
-#' The following pre-defined values are available:* `hour`: Hour of the day* `day`:
-#' Day of the year* `week`: Week of the year* `dekad`: Ten day periods,
-#' counted per year with three periods per month (day 1 - 10, 11 - 20 and 21 -
-#' end of month). The third dekad of the month can range from 8 to 11 days.
-#' For example, the fourth dekad is Feb, 1 - Feb, 10 each year.
-#' * `month`: Month of the year* `season`: Three month periods of the calendar
-#' seasons (December - February, March - May, June - August, September - November).
-#' * `tropical-season`: Six month periods of the tropical seasons (November -
-#' April, May - October).* `year`: Proleptic years* `decade`: Ten year periods
-#' ([0-to-9 decade](https://en.wikipedia.org/wiki/Decade#0-to-9_decade)), from a
-#' year ending in a 0 to the next year ending in a 9.* `decade-ad`: Ten year
-#' periods ([1-to-0 decade](https://en.wikipedia.org/wiki/Decade#1-to-0_decade))
-#' better aligned with the anno Domini (AD) calendar era, from a year ending in
-#' a 1 to the next year ending in a 0.
-#' @param .reducer A reducer to be applied for the values contained in each period.
-#' A reducer is a single process such as ``mean()`` or a set of processes, which
-#' computes a single value for a list of values, see the category 'reducer' for
-#' such processes. Periods may not contain any values, which for most reducers
-#' leads to no-data (`null`) values by default. It may also be a character referring to one
-#' of openeo reducing functions, such as, mean, sum, min, max, etc.
-#' @param .dimension (optional). For **aggregate_temporal_period** and **aggregate_temporal** (optional) :
-#' The name of the temporal dimension for aggregation. All
-#' data along the dimension is passed through the specified reducer. If the
-#' dimension is not set or set to `null`, the data cube is expected to only
-#' have one temporal dimension. Fails with a `TooManyDimensions` exception if
-#' it has more dimensions. Fails with a `DimensionNotAvailable` exception if the
-#' specified dimension does not exist.
-#' @param .context (optional) Additional data to be passed to the reducer.
-#' @param .geometries (optional). For **aggregate_spatial** : Geometries as GeoJSON on which
-#' the aggregation will be based.
-#' One value will be computed per GeoJSON `Feature`, `Geometry` or
-#' `GeometryCollection`. For a `FeatureCollection` multiple values will be computed,
-#' one value per contained `Feature`. For example, a single value will be computed
-#' for a `MultiPolygon`, but two values will be computed for a `FeatureCollection`
-#' containing two polygons.- For **polygons**, the process considers all
-#' pixels for which the point at the pixel centre intersects with the corresponding
-#' polygon (as defined in the Simple Features standard by the OGC).
-#' For **points**, the process considers the closest pixel centre.
-#' For **lines** (line strings), the process considers all the pixels whose centres
-#' are closest to at least one point on the line.Thus, pixels may be part of
-#' multiple geometries and be part of multiple aggregations.To maximize
-#' interoperability, a nested `GeometryCollection` should be avoided.
-#' Furthermore, a `GeometryCollection` composed of a single type of geometries
-#' should be avoided in favour of the corresponding multi-part type
-#' (e.g. `MultiPolygon`).
-#' @param .target_dimension (optional). For **aggregate-spatial** (optional) : The new dimension name
-#' to be used for storing the results. Defaults to `result`.
-#' @param .intervals (optional). For **aggregate_temporal** : Left-closed temporal intervals,
-#' which are allowed to overlap.
-#' Each temporal interval in the array has exactly two elements:1.
-#' The first element is the start of the temporal interval. The specified instance
-#' in time is **included** in the interval.2. The second element is the end of
-#' the temporal interval. The specified instance in time is **excluded** from the
-#' interval.The specified temporal strings follow
-#' RFC 3339(https://www.rfc-editor.org/rfc/rfc3339.html). Although RFC 3339 prohibits
-#' the hour to be '24'(https://www.rfc-editor.org/rfc/rfc3339.html#section-5.7),
-#' **this process allows the value '24' for the hour** of an end time in order
-#' to make it possible that left-closed time intervals can fully cover the day.
-#' @param .labels (optional). For **aggregate_temporal** (optional) : Distinct labels for the intervals, which can contain dates
-#' and/or times. Is only required to be specified if the values for the start of
-#' the temporal intervals are not distinct and thus the default labels would not
-#' be unique. The number of labels and the number of groups need to be equal.
-#' @param .con (optional) openeo connection. Default to NULL
-#' @param .p (optional) processes available at .con
-#' @return datacube
-#' @import dplyr openeo cli sf
-#' @details If .period is defined, aggregate_temporal_period is run. Else if
-#' .geometries is defined, aggregate_spatial runs. Otherwise, if .intervals is passed,
-#' aggregate_temporal runs.
+#' @param .by aggregation method, such as:
+#' 1. "hour", "day", "week", "dekad", "month", "season", "tropical-season", "year", "decade", "decade-ad" for
+#' aggregate temporal period.
+#'
+#' 2. sf object for aggregate spatial
+#'
+#' 3. list with 2 intervals for aggreggate temporal period
+#'
+#' 4. 'time', 'temporal', 't' for reduce temporal dimension
+#'
+#' 5. 'space', 'spatial', 's' for reduce spatial dimension
+#' @return grouped datacube
+#' @import dplyr openeo sf
 #' @seealso [openeo::list_processes()]
 #' @importFrom dplyr group_by
 #' @examples
@@ -119,26 +66,21 @@
 #' p = openeo::processes()
 #'
 #' # aggregate spatially
-#' dc_mean <- dc %>% group_by(.reducer = function(data, context) { p$mean(data) },
-#'     .geometries = polygons)
+#' dc_mean <- dc %>%
+#' group_by(polygons) %>%
+#' summarise("mean")
 #'
-#' # the same result can be obtained with the simplified version ...
-#' dc_mean <- dc %>% group_by(.reducer = "mean",
-#'     .geometries = polygons)
+#' # reduce temporal dimension
+#' dc_sum <- dc %>%
+#' group_by("t") %>%
+#' summarise("sum")
+#'
 #' @export
-group_by.datacube <- function(.data = NULL, ..., .period = NULL, .reducer = NULL,
-                              .dimension = NULL, .context = NULL,
-                              .geometries = NULL, .target_dimension = "result",
-                              .intervals = NULL, .labels = array(),
-                              .p = openeo::processes(.con), .con = NULL) {
+group_by.datacube <- function(.data = NULL, .by = NULL, ...) {
 
   #check dots ...
-  dots = list(...)
-
-  for (i in dots){
-    if (length(dots) != 0){
-      inherits(dots)
-    }
+  if (length(list(...)) > 0) {
+    cli::cli_alert_warning("Additional arguments were passed")
   }
 
   # check mandatory argument
@@ -148,42 +90,13 @@ group_by.datacube <- function(.data = NULL, ..., .period = NULL, .reducer = NULL
       tidyopeneo MUST be passed"
     ))}
 
-  # if reducer is present, it can be either a function call or a function name as string
-  if (!is.null(.reducer)){
+  # add a tag to grouped dc
+  # .data$group = .by
+  group_env <- environment(.data)
+  group_env$group <- .by
 
-    if(inherits(.reducer, "character")){
-      reducing_process = .reducer
-      .reducer = function(data, context) {.p[[reducing_process]](data)}
-    }
-
-  }else{
-    stop(cli::format_error("ERROR : no reducer passed or not implemented"))
-    }
-
-  # aggregate_temporal_period
-  if (all(!is.null(.data), !is.null(.period), is.null(.geometries), is.null(.intervals))) {
-    dc = .p$aggregate_temporal_period(data = .data, period = .period, reducer = .reducer,
-                                     dimension = .dimension, context = .context)
-    cli::cli_alert_success("aggregate_temporal_period applied")
-  }
-
-  # aggregate_spatial
-  if (all(!is.null(.data), !is.null(.geometries), is.null(.period), is.null(.intervals))) {
-
-    dc = .p$aggregate_spatial(data = .data, geometries = .geometries,
-                             reducer = .reducer, target_dimension = .target_dimension,
-                             context = .context)
-    cli::cli_alert_success("aggregate_spatial applied")
-  }
-
-  # aggregate_temporal
-  if (all(!is.null(.data), is.null(.geometries), is.null(.period), !is.null(.intervals))) {
-    dc = .p$aggregate_temporal(data = .data, intervals = .intervals,
-                             reducer = .reducer, dimension = .dimension,
-                             context = .context)
-    cli::cli_alert_success("aggregate_temporal applied")
-  }
-
-  structure(dc, class = c("datacube", class(dc)))
-
+  # check if there's a by
+  attr(.data, "group_env") <- group_env
+  structure(.data, class = unique(c("grouped datacube", class(.data)))) # Class definition
+  return(.data)
 }

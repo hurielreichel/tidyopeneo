@@ -67,11 +67,6 @@
 #'     st_as_sfc()
 #'
 #' dc = dc2 %>% filter(.geometries = pol)
-#'
-#' # array_filter
-#' # ToDO...
-#' # filter_labels
-#' # ToDO
 #' @export
 filter.datacube <- function(.data = NULL, ...,
                             .condition = NULL, .dimension = NULL, .context = NULL,
@@ -80,12 +75,8 @@ filter.datacube <- function(.data = NULL, ...,
                             .p = openeo::processes(.con), .con = NULL) {
 
   #check dots ...
-  dots = list(...)
-
-  for (i in dots){
-    if (length(dots) != 0){
-      inherits(dots)
-    }
+  if (length(list(...)) > 0) {
+    cli::cli_alert_warning("Additional arguments were passed")
   }
 
   # check mandatory argument
@@ -285,8 +276,7 @@ filter.datacube <- function(.data = NULL, ...,
   }
 
   #array_filter
-  if (all(is.null(.geometries), is.null(.extent), !is.null(.condition),
-          is.null(.dimension))) {
+  if (all(is.null(.geometries), is.null(.extent), !is.null(.condition), is.null(.dimension))) {
     dc = .p$array_filter(data = .data, condition = .condition, context = .context)
     cli::cli_alert_success("array_filter applied")
   }
@@ -300,8 +290,7 @@ filter.datacube <- function(.data = NULL, ...,
     if (inherits(.condition, "logical", "TRUE") == 0){
       cli::cli_alert_danger("dimension arg must be logical")}
 
-    dc = .p$filter_labels(.data, condition = .condition,
-                               dimension = .dimension, context = .context)
+    dc = .p$filter_labels(.data, condition = .condition, dimension = .dimension, context = .context)
     cli::cli_alert_success("filter_labels applied")
   }
 
