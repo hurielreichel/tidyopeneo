@@ -26,7 +26,7 @@ The use of the dollar sign is typical from API calls, and it may make more sense
 
 Moreover, we need to remember too many of these processes in order to use them. That is exactly where the tidyverse comes into the scene. The methods from *dplyr* are quite straightforward and natural, and for this reason many tools and scripts are being converted into this so called "universe". In that sense, why not wrap some of the main openEO processes into *dplyr* functions? Why could not datacubes be treated similarly to data frames / tibbles. Therefore, the aim here was to wrap some of the processes from the openEO API into dplyr's functions, such as the famous *filter*, *mutate*, *filter*, and so on. A guide on how exactly this was wrapped can be seen in the figure below.
 
-![openEO processes and their relative wrapped functions in tidyopeneo](vignetetes/struc.png)
+![openEO processes and their relative wrapped functions in tidyopeneo](vignettes/struc.png)
 
 It is important to mention all the functions were wrapped into dplyr's functions, in exception to *resample*, which was fully newly created. For this specific case, this is more of an experiment to analyse whether just wrapping into dplyr functions is enough or maybe new functions could also be accepted. In general, as the idea is also to simplify openEO API processes, this came quickly to mind. 
 
